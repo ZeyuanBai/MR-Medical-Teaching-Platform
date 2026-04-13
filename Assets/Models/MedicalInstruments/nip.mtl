@@ -1,0 +1,12 @@
+#DATAKIT Version 251
+
+newmtl mat-1
+Kd 0.000000 0.000000 0.000000
+d 1.000000
+newmtl carbon fiber inlay unidirectional 2d1
+Kd 0.000000 0.000000 0.000000
+Ks 1.000000 1.000000 1.000000
+Ka 0.000000 0.000000 0.000000
+d 1.000000
+Ns 40.000000
+

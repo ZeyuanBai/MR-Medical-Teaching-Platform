@@ -1,0 +1,391 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\UnityProject\\MR Medical Teaching Platform\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|d:\\unityproject\\mr medical teaching platform\\assets\\unityvolumerendering-master\\assets\\shaders\\crosssectionplane.shader||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\unityvolumerendering-master\\assets\\shaders\\crosssectionplane.shader||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\spatialanchormanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\spatialanchormanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|d:\\unityproject\\mr medical teaching platform\\assets\\unityvolumerendering-master\\assets\\shaders\\slicerenderingshader.shader||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\unityvolumerendering-master\\assets\\shaders\\slicerenderingshader.shader||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\caseofneckmassanatomymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\caseofneckmassanatomymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\centraluicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\centraluicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\anatomyteachingmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\anatomyteachingmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\generalgrabtransformer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\generalgrabtransformer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\headandneckanatomymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\headandneckanatomymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\skilltrainingmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\skilltrainingmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\planetransformbind.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\planetransformbind.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\systemintroductionmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\systemintroductionmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\UnityProject\\MR Medical Teaching Platform\\Library\\PackageCache\\com.unity.xr.interaction.toolkit@2.6.4\\Runtime\\Interaction\\Transformers\\XRGeneralGrabTransformer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Library\\PackageCache\\com.unity.xr.interaction.toolkit@2.6.4\\Runtime\\Interaction\\Transformers\\XRGeneralGrabTransformer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\spatialanchorstorage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\spatialanchorstorage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\UnityProject\\MR Medical Teaching Platform\\Library\\PackageCache\\com.meta.xr.sdk.core@74.0.1\\Scripts\\OVRSpatialAnchor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Library\\PackageCache\\com.meta.xr.sdk.core@74.0.1\\Scripts\\OVRSpatialAnchor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\spatialanchor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\spatialanchor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\highlightdisplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\highlightdisplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\shaders\\highlight.shader||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\shaders\\highlight.shader||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\trainingreportmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\trainingreportmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\positiondetermination.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\positiondetermination.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\gesturemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gesturemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\inserttracheal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\inserttracheal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\cutairway.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\cutairway.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|D:\\UnityProject\\MR Medical Teaching Platform\\assets\\scripts\\cutskin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2C0EF1BF-16AA-2A42-76CB-D3C87BE7F880}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\cutskin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CrossSectionPlane.shader",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\UnityVolumeRendering-master\\Assets\\Shaders\\CrossSectionPlane.shader",
+              "RelativeDocumentMoniker": "Assets\\UnityVolumeRendering-master\\Assets\\Shaders\\CrossSectionPlane.shader",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\UnityVolumeRendering-master\\Assets\\Shaders\\CrossSectionPlane.shader",
+              "RelativeToolTip": "Assets\\UnityVolumeRendering-master\\Assets\\Shaders\\CrossSectionPlane.shader",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAABEAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002777|",
+              "WhenOpened": "2025-11-26T09:40:52.378Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CaseOfNeckMassAnatomyManager.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\CaseOfNeckMassAnatomyManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CaseOfNeckMassAnatomyManager.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\CaseOfNeckMassAnatomyManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CaseOfNeckMassAnatomyManager.cs",
+              "ViewState": "AgIAABACAAAAAAAAAAAAwOIBAABlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-14T01:06:56.416Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "HeadAndNeckAnatomyManager.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\HeadAndNeckAnatomyManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\HeadAndNeckAnatomyManager.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\HeadAndNeckAnatomyManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\HeadAndNeckAnatomyManager.cs",
+              "ViewState": "AgIAAGECAAAAAAAAAADgv3gCAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-12T10:31:05.474Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "PlaneTransformBind.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\PlaneTransformBind.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PlaneTransformBind.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\PlaneTransformBind.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PlaneTransformBind.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAmwCcAAABcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T02:33:14.665Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SliceRenderingShader.shader",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\UnityVolumeRendering-master\\Assets\\Shaders\\SliceRenderingShader.shader",
+              "RelativeDocumentMoniker": "Assets\\UnityVolumeRendering-master\\Assets\\Shaders\\SliceRenderingShader.shader",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\UnityVolumeRendering-master\\Assets\\Shaders\\SliceRenderingShader.shader",
+              "RelativeToolTip": "Assets\\UnityVolumeRendering-master\\Assets\\Shaders\\SliceRenderingShader.shader",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002777|",
+              "WhenOpened": "2025-05-09T10:48:48.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "GeneralGrabTransformer.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\GeneralGrabTransformer.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\GeneralGrabTransformer.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\GeneralGrabTransformer.cs",
+              "RelativeToolTip": "Assets\\Scripts\\GeneralGrabTransformer.cs",
+              "ViewState": "AgIAAHkBAAAAAAAAAAAmwJkBAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T10:00:58.986Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "SpatialAnchorStorage.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\SpatialAnchorStorage.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\SpatialAnchorStorage.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\SpatialAnchorStorage.cs",
+              "RelativeToolTip": "Assets\\Scripts\\SpatialAnchorStorage.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAywAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-05T01:11:24.122Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "OVRSpatialAnchor.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Library\\PackageCache\\com.meta.xr.sdk.core@74.0.1\\Scripts\\OVRSpatialAnchor.cs",
+              "RelativeDocumentMoniker": "Library\\PackageCache\\com.meta.xr.sdk.core@74.0.1\\Scripts\\OVRSpatialAnchor.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Library\\PackageCache\\com.meta.xr.sdk.core@74.0.1\\Scripts\\OVRSpatialAnchor.cs",
+              "RelativeToolTip": "Library\\PackageCache\\com.meta.xr.sdk.core@74.0.1\\Scripts\\OVRSpatialAnchor.cs",
+              "ViewState": "AgIAAKwCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-05T01:04:09.288Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "HighLightDisplay.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\HighLightDisplay.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\HighLightDisplay.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\HighLightDisplay.cs",
+              "RelativeToolTip": "Assets\\Scripts\\HighLightDisplay.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-26T00:28:32.136Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "highlight.shader",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Shaders\\highlight.shader",
+              "RelativeDocumentMoniker": "Assets\\Shaders\\highlight.shader",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Shaders\\highlight.shader",
+              "RelativeToolTip": "Assets\\Shaders\\highlight.shader",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002777|",
+              "WhenOpened": "2025-04-25T09:42:22.084Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "XRGeneralGrabTransformer.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Library\\PackageCache\\com.unity.xr.interaction.toolkit@2.6.4\\Runtime\\Interaction\\Transformers\\XRGeneralGrabTransformer.cs",
+              "RelativeDocumentMoniker": "Library\\PackageCache\\com.unity.xr.interaction.toolkit@2.6.4\\Runtime\\Interaction\\Transformers\\XRGeneralGrabTransformer.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Library\\PackageCache\\com.unity.xr.interaction.toolkit@2.6.4\\Runtime\\Interaction\\Transformers\\XRGeneralGrabTransformer.cs",
+              "RelativeToolTip": "Library\\PackageCache\\com.unity.xr.interaction.toolkit@2.6.4\\Runtime\\Interaction\\Transformers\\XRGeneralGrabTransformer.cs",
+              "ViewState": "AgIAADsBAAAAAAAAAAAAAEQBAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-25T09:20:34.732Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CentralUIController.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\CentralUIController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CentralUIController.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\CentralUIController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CentralUIController.cs",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAawKoAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-12T09:00:06.668Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "SystemIntroductionManager.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\SystemIntroductionManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\SystemIntroductionManager.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\SystemIntroductionManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\SystemIntroductionManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T02:18:10.367Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SpatialAnchorManager.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\SpatialAnchorManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\SpatialAnchorManager.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\SpatialAnchorManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\SpatialAnchorManager.cs",
+              "ViewState": "AgIAAKQAAAAAAAAAAAAuwLEAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T07:46:07.595Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AnatomyTeachingManager.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\AnatomyTeachingManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\AnatomyTeachingManager.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\AnatomyTeachingManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\AnatomyTeachingManager.cs",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAiwFkAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-12T09:58:00.538Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "SkillTrainingManager.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\SkillTrainingManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\SkillTrainingManager.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\SkillTrainingManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\SkillTrainingManager.cs",
+              "ViewState": "AgIAALIBAAAAAAAAAAAUwIwAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-20T00:23:23.739Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "TrainingReportManager.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\TrainingReportManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\TrainingReportManager.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\TrainingReportManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\TrainingReportManager.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAIwFsAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-13T02:41:46.053Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "GestureManager.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\GestureManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\GestureManager.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\GestureManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\GestureManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T01:18:27.379Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "SpatialAnchor.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\SpatialAnchor.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\SpatialAnchor.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\SpatialAnchor.cs",
+              "RelativeToolTip": "Assets\\Scripts\\SpatialAnchor.cs",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAowHIAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T07:37:21Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "PositionDetermination.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\PositionDetermination.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PositionDetermination.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\PositionDetermination.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PositionDetermination.cs",
+              "ViewState": "AgIAAKMAAAAAAAAAAAAywLgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-22T03:48:54.534Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "CutSkin.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\CutSkin.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CutSkin.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\CutSkin.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CutSkin.cs",
+              "ViewState": "AgIAAIUAAAAAAAAAAAAuwJIAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-16T03:22:00.549Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "CutAirway.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\CutAirway.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CutAirway.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\CutAirway.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CutAirway.cs",
+              "ViewState": "AgIAAKYAAAAAAAAAAAAywJoAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-26T02:01:02.681Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "InsertTracheal.cs",
+              "DocumentMoniker": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\InsertTracheal.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\InsertTracheal.cs",
+              "ToolTip": "D:\\UnityProject\\MR Medical Teaching Platform\\Assets\\Scripts\\InsertTracheal.cs",
+              "RelativeToolTip": "Assets\\Scripts\\InsertTracheal.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEAAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-26T02:55:43.032Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
