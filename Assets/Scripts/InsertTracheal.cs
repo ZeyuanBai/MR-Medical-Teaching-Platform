@@ -19,6 +19,10 @@ public class InsertTracheal : MonoBehaviour
     public bool isInsertionOver = false;    
     [HideInInspector]
     public bool isPositionValid = true;
+    [HideInInspector]
+    public float stableHoldDuration = 0f;
+
+    private float insertedSinceTime = -1f;
 
 
 
@@ -34,7 +38,20 @@ public class InsertTracheal : MonoBehaviour
 
     void Update()
     {
-        
+        if (isTrachealInserted)
+        {
+            if (insertedSinceTime < 0f)
+            {
+                insertedSinceTime = Time.time;
+            }
+
+            stableHoldDuration = Time.time - insertedSinceTime;
+        }
+        else
+        {
+            insertedSinceTime = -1f;
+            stableHoldDuration = 0f;
+        }
     }
 
 
@@ -54,7 +71,7 @@ public class InsertTracheal : MonoBehaviour
     {
         if (isInsertionOver)
         {
-            isPositionValid = true;
+            isPositionValid = isTrachealInserted;
             if (isTrachealInserted)
             {
                 //skillTrainingManager.SetLogInfo("Tracheal Inserted");   
@@ -83,6 +100,10 @@ public class InsertTracheal : MonoBehaviour
         if (other.gameObject.tag == "TrachealTip")
         {
             isTrachealInserted = true;
+            if (insertedSinceTime < 0f)
+            {
+                insertedSinceTime = Time.time;
+            }
         }
     }
 
@@ -91,6 +112,8 @@ public class InsertTracheal : MonoBehaviour
         if (other.gameObject.tag == "TrachealTip")
         {
             isTrachealInserted = false;
+            insertedSinceTime = -1f;
+            stableHoldDuration = 0f;
         }
     }
 
@@ -98,6 +121,9 @@ public class InsertTracheal : MonoBehaviour
     {
         isTrachealInserted = false;
         isInsertionOver = false;
+        isPositionValid = true;
+        insertedSinceTime = -1f;
+        stableHoldDuration = 0f;
         //skillTrainingManager.SetLogInfo("Step4 Reset Done");
         //Logs.text += "\nStep4 Reset";
     }

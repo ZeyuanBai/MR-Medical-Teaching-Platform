@@ -1,0 +1,13 @@
+name: optimize-training-report-evaluation-criteria
+schema: spec-driven
+status: proposed
+createdAt: 2026-04-13
+owner: teaching-quality
+apply:
+  requires:
+    - tasks
+artifacts:
+  proposal: done
+  design: done
+  tasks: done
+

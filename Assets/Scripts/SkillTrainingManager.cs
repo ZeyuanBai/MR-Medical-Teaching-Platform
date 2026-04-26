@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using PaintCore;
+using PaintIn3D;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
-using TMPro;
-using PaintIn3D;
-using PaintCore;
 
 public class SkillTrainingManager : MonoBehaviour
 {
@@ -28,25 +28,20 @@ public class SkillTrainingManager : MonoBehaviour
     public GameObject Scalpel;
     public GameObject Tracheal;
     public GameObject MarkerPosition;
-    private Vector3 MarkerInitPos;
     public GameObject ScalpelPosition;
-    private Vector3 ScalpelInitPos;
     public GameObject TrachealTubePosition;
-    private Vector3 TrachealTubeInitPos;
     public GameObject MarkerTipVisual;
     public GameObject MarkerBodyVisual;
     public GameObject ScalpelVisual;
     public GameObject TrachealVisual;
 
-    [Header("UIelements")]
+    [Header("UI Elements")]
     public TMP_Text Logs;
-
     public Button SkillTrainingStartBtn;
     public Button SkillTrainingResetBtn;
     public Button TransparentModeBtn;
     public TMP_Text TransparentModeBtnText;
     public Button ViewReportBtn;
-
     public Button DrawTextureClearBtn;
     public Button DetermineDrawPositionBtn;
     public Button CutSkinRetryBtn;
@@ -55,8 +50,6 @@ public class SkillTrainingManager : MonoBehaviour
     public Button CutAirwayOverBtn;
     public Button TrachealReplaceBtn;
     public Button InsertionOverBtn;
-
-    //public Button TestBtn;
 
     [Header("PaintIn3D")]
     public CwButtonClearAll CwClearAll;
@@ -68,7 +61,6 @@ public class SkillTrainingManager : MonoBehaviour
     public bool TransparentMode = false;
     [HideInInspector]
     public float TrainingTime = 0f;
-    private bool isTimerActive = false;
 
     [Header("Step 1 Components")]
     public PositionDetermination positionDetermination;
@@ -99,17 +91,23 @@ public class SkillTrainingManager : MonoBehaviour
     public Material TransTissueMat;
     public Material HighLightMat;
 
-    // ÈÕÖ¾ÉèÖÃ
-    private int maxLogCount = 5; // ×î´óÈÕÖ¾ÌõÊı
-    private Queue<string> logQueue = new Queue<string>(); // ÈÕÖ¾¶ÓÁĞ
-
-    // Ä£ĞÍ¿Õ¼ä¶¨Î»
     [HideInInspector]
     public bool isModelPositioned = false;
     [HideInInspector]
-    public Vector3 ModelPosition = new Vector3(0, 0, 0);
+    public Vector3 ModelPosition = Vector3.zero;
     [HideInInspector]
-    public Quaternion ModelRotation = new Quaternion(0, 0, 0, 0);
+    public Quaternion ModelRotation = Quaternion.identity;
+
+    private readonly Queue<string> _logQueue = new Queue<string>();
+    private const int MaxLogCount = 5;
+    private bool _isTimerActive;
+    private Vector3 _markerInitPos;
+    private Vector3 _scalpelInitPos;
+    private Vector3 _trachealTubeInitPos;
+
+    private const string ScenarioName = "æ°”ç®¡åˆ‡å¼€è®­ç»ƒ";
+    private const string StartHint = "æŒ‰ä¸‹â€œå¼€å§‹â€æŒ‰é”®ä»¥å¼€å§‹ç»ƒä¹ ";
+    private const string ReportBlockedHint = "è¯·å®Œæˆç»ƒä¹ åå†æŸ¥çœ‹æŠ¥å‘Š";
 
     public enum TrainingStep
     {
@@ -120,7 +118,7 @@ public class SkillTrainingManager : MonoBehaviour
         Step4_InsertTracheal
     }
 
-    void Start()
+    private void Start()
     {
         SkillTrainingStartBtn.onClick.AddListener(OnBtnPressedStartSkillTraining);
         SkillTrainingResetBtn.onClick.AddListener(OnBtnPressedResetSkillTraining);
@@ -136,35 +134,36 @@ public class SkillTrainingManager : MonoBehaviour
         TrachealReplaceBtn.onClick.AddListener(OnBtnPressedTrachealReplace);
         InsertionOverBtn.onClick.AddListener(OnBtnPressedInsertionOver);
 
-        //TestBtn.onClick.AddListener(OnBtnPressedTest);
-
-        positionDetermination = GameObject.Find("DrawRegion").GetComponent<PositionDetermination>();
+        if (positionDetermination == null && DrawRegion != null)
+        {
+            positionDetermination = DrawRegion.GetComponent<PositionDetermination>();
+        }
 
         ResetTraining();
     }
 
-    void Update()
+    private void Update()
     {
         UpdateModelPosition();
-        MarkerInitPos = MarkerPosition.transform.position;
-        ScalpelInitPos = ScalpelPosition.transform.position;
-        TrachealTubeInitPos = TrachealTubePosition.transform.position;
 
-        if (isTimerActive)
+        if (MarkerPosition != null) _markerInitPos = MarkerPosition.transform.position;
+        if (ScalpelPosition != null) _scalpelInitPos = ScalpelPosition.transform.position;
+        if (TrachealTubePosition != null) _trachealTubeInitPos = TrachealTubePosition.transform.position;
+
+        if (_isTimerActive)
         {
             TrainingTime += Time.deltaTime;
         }
     }
 
     private void UpdateModelPosition()
-    { 
-        if (isModelPositioned)
+    {
+        if (isModelPositioned && SkillTrainingModelTable != null)
         {
             SkillTrainingModelTable.transform.position = ModelPosition;
             SkillTrainingModelTable.transform.rotation = ModelRotation;
         }
     }
-
 
     private IEnumerator TrainingFlow()
     {
@@ -173,140 +172,157 @@ public class SkillTrainingManager : MonoBehaviour
             switch (CurrentStep)
             {
                 case TrainingStep.Step1_PositionDetermination:
-                    SetLogInfo("²½Öè1£ºÈ·¶¨ÇĞ¸îÎ»ÖÃ");
-                    SetLogInfo("Ñ¡Ôñ»·×´Èí¹ÇÏÂ·½µÚ2-3Æø¹ÜÈí¹Ç»·ÎªÆø¹ÜÇĞ¿ªÎ»ÖÃ£¨Ô¼ĞØ¹ÇÉÏÎÑÉÏ·½2-3cm£©£¬ÓÃ±Ê»­³ö×İÏòÇĞ¸îÎ»ÖÃ");
-                    //Logs.text += "\nSkill Training State: Step 1 - Determine cut position";
+                    SetLogInfo("æ­¥éª¤1ï¼šç¡®å®šåˆ‡å‰²ä½ç½®");
+                    SetLogInfo("é€‰æ‹©ç¯çŠ¶è½¯éª¨ä¸‹æ–¹ç¬¬2-3æ°”ç®¡è½¯éª¨ç¯ä¸ºæ°”ç®¡åˆ‡å¼€ä½ç½®ï¼Œç”¨ç¬”ç”»å‡ºçºµå‘åˆ‡å‰²ä½ç½®ã€‚");
                     yield return StartCoroutine(ExecuteStep1());
                     break;
 
                 case TrainingStep.Step2_CutSkinAndTissue:
-                    SetLogInfo("²½Öè2£ºÇĞ¿ªÆ¤·ôºÍ×éÖ¯");
-                    SetLogInfo("ÑØ¾±²¿ÕıÖĞÏß×ö´¹Ö±ÇĞ¿Ú£¬³¤¶ÈÔ¼3-4cm£¨ÉÏÆğ»·×´Èí¹ÇÏÂÔµ£¬ÏÂÖÁĞØ¹ÇÉÏÎÑÉÏ·½£©");
-                    //Logs.text += "\nSkill Training State: Step 2 - Cut skin and tissue";
+                    SetLogInfo("æ­¥éª¤2ï¼šåˆ‡å¼€çš®è‚¤å’Œç»„ç»‡");
+                    SetLogInfo("æ²¿é¢ˆéƒ¨æ­£ä¸­çº¿åšå‚ç›´åˆ‡å£ï¼Œé•¿åº¦çº¦3-4cmã€‚");
                     yield return StartCoroutine(ExecuteStep2());
                     break;
 
                 case TrainingStep.Step3_CutAirway:
-                    SetLogInfo("²½Öè3£ºÇĞ¿ªÆø¹Ü");
-                    SetLogInfo("ÓÃÊÖÊõµ¶Ë®Æ½ºáÏòÇĞ¿ªÆø¹ÜÇ°±Ú£¬ÇĞ¿Ú³¤¶ÈÔ¼1-1.5cm");
-                    //Logs.text += "\nSkill Training State: Step 3 - Cut airway";
+                    SetLogInfo("æ­¥éª¤3ï¼šåˆ‡å¼€æ°”ç®¡");
+                    SetLogInfo("ç”¨æ‰‹æœ¯åˆ€æ°´å¹³æ¨ªå‘åˆ‡å¼€æ°”ç®¡å‰å£ï¼Œåˆ‡å£é•¿åº¦çº¦1-1.5cmã€‚");
                     yield return StartCoroutine(ExecuteStep3());
                     break;
 
                 case TrainingStep.Step4_InsertTracheal:
-                    SetLogInfo("²½Öè4£º²åÈëÆø¹ÜÌ×¹Ü");
-                    SetLogInfo("½«Æø¹ÜÌ×¹Ü²åÈëÆø¹ÜÄÚ£¬×¢Òâ±£³ÖÆø¹ÜÌ×¹ÜÓëÆø¹ÜÆ½ĞĞ£¬±ÜÃâËğÉËºó±Ú");
-                    //Logs.text += "\nSkill Training State: Step 4 - Insert the tracheal into the trachea";
+                    SetLogInfo("æ­¥éª¤4ï¼šæ’å…¥æ°”ç®¡å¥—ç®¡");
+                    SetLogInfo("å°†æ°”ç®¡å¥—ç®¡æ’å…¥æ°”ç®¡å†…ï¼Œæ³¨æ„ä¿æŒå¹³è¡Œï¼Œé¿å…æŸä¼¤åå£ã€‚");
                     yield return StartCoroutine(ExecuteStep4());
                     ResetTraining();
                     yield break;
             }
+
             NextStep();
         }
     }
 
     private IEnumerator ExecuteStep1()
     {
-        Marker.SetActive(true);
-        Marker.transform.position = MarkerInitPos;
-        Scalpel.SetActive(false);
-        Tracheal.SetActive(false);
+        if (Marker != null)
+        {
+            Marker.SetActive(true);
+            Marker.transform.position = _markerInitPos;
+        }
 
-        //Add_Material(MarkerBodyVisual, HighLightMat);
-        //Add_Material(MarkerTipVisual, HighLightMat);
-        MarkerBodyVisual.GetComponent<HighLightDisplay>().Add_Material();
-        MarkerTipVisual.GetComponent<HighLightDisplay>().Add_Material();
+        if (Scalpel != null) Scalpel.SetActive(false);
+        if (Tracheal != null) Tracheal.SetActive(false);
+
+        if (MarkerBodyVisual != null) MarkerBodyVisual.GetComponent<HighLightDisplay>().Add_Material();
+        if (MarkerTipVisual != null) MarkerTipVisual.GetComponent<HighLightDisplay>().Add_Material();
 
         yield return StartCoroutine(positionDetermination.WaitForCollisionAndCalculate());
-        
-
-        //yield return new WaitForSeconds(3f);
     }
 
     private IEnumerator ExecuteStep2()
     {
-        Marker.SetActive(false);
-        Scalpel.SetActive(true);
-        Scalpel.transform.position = ScalpelInitPos;
-        Tracheal.SetActive(false);
+        if (Marker != null) Marker.SetActive(false);
+        if (Scalpel != null)
+        {
+            Scalpel.SetActive(true);
+            Scalpel.transform.position = _scalpelInitPos;
+        }
+        if (Tracheal != null) Tracheal.SetActive(false);
 
-        ScalpelVisual.GetComponent<HighLightDisplay>().Add_Material();
+        if (ScalpelVisual != null) ScalpelVisual.GetComponent<HighLightDisplay>().Add_Material();
 
         yield return StartCoroutine(cutSkin.WaitForCollisionAndCut());
-        Skin.SetActive(false);
-        Tissue.SetActive(false);
-        SkinCut.SetActive(true);
-        TissueCut.SetActive(true);
-        NeckSkin.SetActive(false);
-        CwClearAll.ClearAll();
-        //yield return new WaitForSeconds(3f);
+
+        if (Skin != null) Skin.SetActive(false);
+        if (Tissue != null) Tissue.SetActive(false);
+        if (SkinCut != null) SkinCut.SetActive(true);
+        if (TissueCut != null) TissueCut.SetActive(true);
+        if (NeckSkin != null) NeckSkin.SetActive(false);
+        if (CwClearAll != null) CwClearAll.ClearAll();
     }
 
     private IEnumerator ExecuteStep3()
     {
-        ScalpelVisual.GetComponent<HighLightDisplay>().Add_Material();
+        if (ScalpelVisual != null) ScalpelVisual.GetComponent<HighLightDisplay>().Add_Material();
 
         yield return StartCoroutine(cutAirway.WaitForCollisionAndCut());
-        Airway.SetActive(false);
-        AirwayCut.SetActive(true);
-        //yield return new WaitForSeconds(3f);
+
+        if (Airway != null) Airway.SetActive(false);
+        if (AirwayCut != null) AirwayCut.SetActive(true);
     }
 
     private IEnumerator ExecuteStep4()
     {
-        Marker.SetActive(false);
-        Scalpel.SetActive(false);
-        Tracheal.SetActive(true);
-        Tracheal.transform.position = TrachealTubeInitPos;
+        if (Marker != null) Marker.SetActive(false);
+        if (Scalpel != null) Scalpel.SetActive(false);
+        if (Tracheal != null)
+        {
+            Tracheal.SetActive(true);
+            Tracheal.transform.position = _trachealTubeInitPos;
+        }
 
-        TrachealVisual.GetComponent<HighLightDisplay>().Add_Material();
+        if (TrachealVisual != null) TrachealVisual.GetComponent<HighLightDisplay>().Add_Material();
 
         yield return StartCoroutine(insertTracheal.WaitForCollision());
-
-        //yield return new WaitForSeconds(3f);
     }
-
 
     public void OnBtnPressedStartSkillTraining()
     {
-        if (CurrentStep != TrainingStep.Idle) return;
+        if (CurrentStep != TrainingStep.Idle)
+        {
+            return;
+        }
+
         CurrentStep = TrainingStep.Step1_PositionDetermination;
-        StartCoroutine(TrainingFlow());
-        trainingReportManager.isTrainingOver = false;
-        // Æô¶¯¼ÆÊ±
+
+        if (trainingReportManager != null)
+        {
+            trainingReportManager.BeginSession(ScenarioName);
+            trainingReportManager.isTrainingOver = false;
+        }
+
         TrainingTime = 0f;
-        isTimerActive = true;
+        _isTimerActive = true;
+        StartCoroutine(TrainingFlow());
     }
 
     private void NextStep()
     {
-        if (CurrentStep >= TrainingStep.Step4_InsertTracheal) return;
-        CurrentStep++;
+        if (CurrentStep < TrainingStep.Step4_InsertTracheal)
+        {
+            CurrentStep++;
+        }
     }
 
     public void ActiveMedicalInstruments(bool active)
     {
-        Marker.SetActive(active);
-        Scalpel.SetActive(active);
-        Tracheal.SetActive(active);
-        if (active)
+        if (Marker != null) Marker.SetActive(active);
+        if (Scalpel != null) Scalpel.SetActive(active);
+        if (Tracheal != null) Tracheal.SetActive(active);
+
+        if (!active)
         {
-            Marker.transform.position = MarkerInitPos;
-            Scalpel.transform.position = ScalpelInitPos;
-            Tracheal.transform.position = TrachealTubeInitPos;
+            return;
         }
+
+        if (Marker != null) Marker.transform.position = _markerInitPos;
+        if (Scalpel != null) Scalpel.transform.position = _scalpelInitPos;
+        if (Tracheal != null) Tracheal.transform.position = _trachealTubeInitPos;
     }
 
     public void OnBtnPressedClearDrawTexture()
     {
-        CwClearAll.ClearAll();
+        if (CwClearAll != null) CwClearAll.ClearAll();
         positionDetermination.ResetStep1();
         positionDetermination.isPositionDetermined = false;
     }
 
     public void OnBtnPressedDetermineDrawPosition()
     {
-        if (CurrentStep != TrainingStep.Step1_PositionDetermination) return;    
+        if (CurrentStep != TrainingStep.Step1_PositionDetermination)
+        {
+            return;
+        }
+
         positionDetermination.isPositionDetermined = true;
         cutSkin.isCutOver = false;
         cutSkin.ResetStep2();
@@ -314,13 +330,22 @@ public class SkillTrainingManager : MonoBehaviour
 
     public void OnBtnPressedCutSkinRetry()
     {
+        if (trainingReportManager != null)
+        {
+            trainingReportManager.RecordRetry("step2", "æ­¥éª¤äºŒé‡æ–°åˆ‡å¼€çš®è‚¤å’Œç»„ç»‡ã€‚");
+        }
+
         cutSkin.isCutOver = false;
         cutSkin.ResetStep2();
     }
 
     public void OnBtnPressedCutSkinOver()
     {
-        if (CurrentStep != TrainingStep.Step2_CutSkinAndTissue) return;
+        if (CurrentStep != TrainingStep.Step2_CutSkinAndTissue)
+        {
+            return;
+        }
+
         cutSkin.isCutOver = true;
         cutAirway.isCutOver = false;
         cutAirway.ResetStep3();
@@ -328,13 +353,22 @@ public class SkillTrainingManager : MonoBehaviour
 
     public void OnBtnPressedCutAirwayRetry()
     {
+        if (trainingReportManager != null)
+        {
+            trainingReportManager.RecordRetry("step3", "æ­¥éª¤ä¸‰é‡æ–°åˆ‡å¼€æ°”ç®¡ã€‚");
+        }
+
         cutAirway.isCutOver = false;
         cutAirway.ResetStep3();
     }
 
     public void OnBtnPressedCutAirwayOver()
     {
-        if (CurrentStep != TrainingStep.Step3_CutAirway) return;
+        if (CurrentStep != TrainingStep.Step3_CutAirway)
+        {
+            return;
+        }
+
         cutAirway.isCutOver = true;
         insertTracheal.isInsertionOver = false;
         insertTracheal.ResetStep4();
@@ -342,19 +376,34 @@ public class SkillTrainingManager : MonoBehaviour
 
     public void OnBtnPressedTrachealReplace()
     {
+        if (trainingReportManager != null)
+        {
+            trainingReportManager.RecordRetry("step4", "æ­¥éª¤å››é‡æ–°æ”¾ç½®æ°”ç®¡å¥—ç®¡ã€‚");
+        }
+
         insertTracheal.isTrachealInserted = false;
-        //insertTracheal.ReplaceTrachealPosition();
-        Tracheal.transform.position = TrachealTubeInitPos;
+        if (Tracheal != null)
+        {
+            Tracheal.transform.position = _trachealTubeInitPos;
+        }
     }
 
     public void OnBtnPressedInsertionOver()
     {
-        if (CurrentStep != TrainingStep.Step4_InsertTracheal) return;
+        if (CurrentStep != TrainingStep.Step4_InsertTracheal)
+        {
+            return;
+        }
+
         insertTracheal.isInsertionOver = true;
-        trainingReportManager.isTrainingOver = true;
-        // ½áÊø¼ÆÊ±
-        isTimerActive = false;
-        trainingReportManager.TrainingTime = TrainingTime;
+        _isTimerActive = false;
+
+        if (trainingReportManager != null)
+        {
+            trainingReportManager.isTrainingOver = true;
+            trainingReportManager.TrainingTime = TrainingTime;
+            trainingReportManager.ShowReport();
+        }
     }
 
     public void OnBtnPressedResetSkillTraining()
@@ -366,61 +415,55 @@ public class SkillTrainingManager : MonoBehaviour
     {
         CurrentStep = TrainingStep.Idle;
         ActiveMedicalInstruments(true);
-        NeckSkin.SetActive(true);
+
+        if (NeckSkin != null) NeckSkin.SetActive(true);
+
         positionDetermination.ResetStep1();
         positionDetermination.isPositionDetermined = false;
-        CwClearAll.ClearAll();  
+
+        if (CwClearAll != null) CwClearAll.ClearAll();
+
         cutSkin.ResetStep2();
         cutSkin.isCutOver = false;
         cutAirway.ResetStep3();
         cutAirway.isCutOver = false;
         insertTracheal.ResetStep4();
         insertTracheal.isTrachealInserted = false;
-        Skin.SetActive(true);
-        //Bone.SetActive(true);
-        Airway.SetActive(true);
-        //Brain.SetActive(true);
-        Tissue.SetActive(true);
-        SkinCut.SetActive(false);
-        AirwayCut.SetActive(false);
-        TissueCut.SetActive(false);
-        NeckSkin.SetActive(true);
+
+        if (Skin != null) Skin.SetActive(true);
+        if (Airway != null) Airway.SetActive(true);
+        if (Tissue != null) Tissue.SetActive(true);
+        if (SkinCut != null) SkinCut.SetActive(false);
+        if (AirwayCut != null) AirwayCut.SetActive(false);
+        if (TissueCut != null) TissueCut.SetActive(false);
+        if (NeckSkin != null) NeckSkin.SetActive(true);
+
         TrainingTime = 0f;
-        isTimerActive = false;
-        SetLogInfo("°´ÏÂ¡°¿ªÊ¼¡±°´¼üÒÔ¿ªÊ¼Á·Ï°");
-        //Logs.text += "\n°´ÏÂ¡°¿ªÊ¼¡±°´¼üÒÔ¿ªÊ¼Á·Ï°";
+        _isTimerActive = false;
+
+        if (trainingReportManager != null)
+        {
+            trainingReportManager.TrainingTime = 0f;
+            if (!trainingReportManager.isTrainingOver)
+            {
+                trainingReportManager.ResetReportState();
+            }
+        }
+
+        SetLogInfo(StartHint);
     }
 
     public void OnBtnPressedTransparentMode()
     {
-        if (TransparentMode)
+        TransparentMode = !TransparentMode;
+        if (TransparentModeBtnText != null)
         {
-            TransparentMode = false;
-            TransparentModeBtnText.text = "Í¸Ã÷Ä£Ê½£º¹Ø";
-            Skin.GetComponent<Renderer>().material = SkinMat;
-            SkinCut.GetComponent<Renderer>().material = SkinMat;
-            NeckSkin.GetComponent<Renderer>().material = SkinMat;
-            Bone.GetComponent<Renderer>().material = BoneMat;
-            Airway.GetComponent<Renderer>().material = AirwayMat;
-            AirwayCut.GetComponent<Renderer>().material = AirwayMat;
-            Brain.GetComponent<Renderer>().material = BrainMat;
-            Tissue.GetComponent<Renderer>().material = TissueMat;
-            TissueCut.GetComponent<Renderer>().material = TissueMat;
+            TransparentModeBtnText.text = TransparentMode
+                ? "é€æ˜æ¨¡å¼ï¼šå¼€"
+                : "é€æ˜æ¨¡å¼ï¼šå…³";
         }
-        else
-        {
-            TransparentMode = true;
-            TransparentModeBtnText.text = "Í¸Ã÷Ä£Ê½£º¿ª";
-            Skin.GetComponent<Renderer>().material = TranspSkinMat;
-            SkinCut.GetComponent<Renderer>().material = TranspSkinMat;
-            NeckSkin.GetComponent<Renderer>().material = TranspSkinMat;
-            Bone.GetComponent<Renderer>().material = TranspBoneMat;
-            Airway.GetComponent<Renderer>().material = TranspAirwayMat;
-            AirwayCut.GetComponent<Renderer>().material = TranspAirwayMat;
-            Brain.GetComponent<Renderer>().material = TranspBrainMat;
-            Tissue.GetComponent<Renderer>().material = TransTissueMat;
-            TissueCut.GetComponent<Renderer>().material = TransTissueMat;
-        }
+
+        SetTransparentModeMaterials(TransparentMode);
     }
 
     public void OnBtnPressedViewReport()
@@ -431,22 +474,23 @@ public class SkillTrainingManager : MonoBehaviour
         }
         else
         {
-            SetLogInfo("ÇëÍê³ÉÁ·Ï°ºóÔÙ²é¿´±¨¸æ");
+            SetLogInfo(ReportBlockedHint);
         }
     }
 
-    // ÉèÖÃÈÕÖ¾ĞÅÏ¢
     public void SetLogInfo(string log)
     {
-        if (logQueue.Count >= maxLogCount) // Èç¹ûÈÕÖ¾¶ÓÁĞ´ïµ½×î´óÌõÊı
+        if (_logQueue.Count >= MaxLogCount)
         {
-            logQueue.Dequeue(); // ÒÆ³ı×î¾ÉµÄÈÕÖ¾
+            _logQueue.Dequeue();
         }
-        logQueue.Enqueue(log); // Ìí¼ÓĞÂµÄÈÕÖ¾
 
-        //Debug.Log("SpatialAnchorManager" + log); // Êä³öµ½¿ØÖÆÌ¨
+        _logQueue.Enqueue(log);
 
-        Logs.text = string.Join("\n", logQueue.ToArray()); // ¸üĞÂÌáÊ¾ÎÄ±¾ÏÔÊ¾ÈÕÖ¾
+        if (Logs != null)
+        {
+            Logs.text = string.Join("\n", _logQueue.ToArray());
+        }
     }
 
     public void Add_Material(GameObject obj, Material mat)
@@ -467,8 +511,44 @@ public class SkillTrainingManager : MonoBehaviour
         meshRenderer.materials = materialList.ToArray();
     }
 
-    //public void OnBtnPressedTest()
-    //{
-    //    MarkerBodyVisual.GetComponent<HighLightDisplay>().Remove_Material();
-    //}
+    private void SetTransparentModeMaterials(bool transparent)
+    {
+        if (!transparent)
+        {
+            AssignMaterial(Skin, SkinMat);
+            AssignMaterial(SkinCut, SkinMat);
+            AssignMaterial(NeckSkin, SkinMat);
+            AssignMaterial(Bone, BoneMat);
+            AssignMaterial(Airway, AirwayMat);
+            AssignMaterial(AirwayCut, AirwayMat);
+            AssignMaterial(Brain, BrainMat);
+            AssignMaterial(Tissue, TissueMat);
+            AssignMaterial(TissueCut, TissueMat);
+            return;
+        }
+
+        AssignMaterial(Skin, TranspSkinMat);
+        AssignMaterial(SkinCut, TranspSkinMat);
+        AssignMaterial(NeckSkin, TranspSkinMat);
+        AssignMaterial(Bone, TranspBoneMat);
+        AssignMaterial(Airway, TranspAirwayMat);
+        AssignMaterial(AirwayCut, TranspAirwayMat);
+        AssignMaterial(Brain, TranspBrainMat);
+        AssignMaterial(Tissue, TransTissueMat);
+        AssignMaterial(TissueCut, TransTissueMat);
+    }
+
+    private void AssignMaterial(GameObject target, Material material)
+    {
+        if (target == null || material == null)
+        {
+            return;
+        }
+
+        Renderer renderer = target.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            renderer.material = material;
+        }
+    }
 }

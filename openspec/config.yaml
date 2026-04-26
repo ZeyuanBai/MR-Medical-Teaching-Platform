@@ -1,20 +1,24 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |  
+  语言：中文（简体）
+  所有产出物必须用简体中文撰写。
+  技术栈:  Unity (2022.3.48f1c1), GitLab LFS, C#, OpenXR , XR Interaction Toolkit (XRI 3.1.x)
+  目标平台: Windows (PCVR: Meta Quest)
+  开发环境: Windows 11 / Windows 10
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+
+rules:
+  specs:
+    - 必须使用中文，除非特定术语，确保理解无歧义
+    - 明确说明机制，而不仅仅是结果（说怎么做，而不仅仅是做什么）
+
+  tasks:
+    - 必须使用中文，除非特定术语，确保理解无歧义
+
+  design:
+    - 必须使用中文，除非特定术语，确保理解无歧义
+    - 优先使用现有的框架、变量、列表实现，不要重复发明轮子，除非现有架构明显有问题
+
+  apply:
+    - 生成的 C# 代码中, 若包含中文注释或字符串, 必须确保文件以【UTF-8】格式保存, 以防止 Unity 编辑器在不同平台上出现乱码 
