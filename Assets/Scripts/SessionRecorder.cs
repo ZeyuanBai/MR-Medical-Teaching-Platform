@@ -69,6 +69,17 @@ public class SessionRecorder : MonoBehaviour
         RefreshReportSnapshotInternal();
     }
 
+    public void ResetRecorder()
+    {
+        _capturedSteps.Clear();
+        _timelineEvents.Clear();
+        _lastPoseCaptureTimes.Clear();
+        CurrentStepResult = null;
+        CurrentSession = null;
+        CurrentReport = null;
+        _sessionStartClock = 0f;
+    }
+
     public void StartStep(string stepId, string stepName, int stepIndex)
     {
         EnsureRecorderReadyInternal();

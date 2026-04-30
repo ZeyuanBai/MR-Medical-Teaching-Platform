@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using System;   
+using UnityEngine;
 
 public class CutSkin : MonoBehaviour
 {
@@ -18,17 +18,17 @@ public class CutSkin : MonoBehaviour
     public GameObject TestPrefab;
 
     [HideInInspector]
-    public Vector3 StartPointLocalPosition = new Vector3(0, 0, 0);
+    public Vector3 StartPointLocalPosition = Vector3.zero;
     [HideInInspector]
-    public Vector3 EndPointLocalPosition = new Vector3(0, 0, 0);
+    public Vector3 EndPointLocalPosition = Vector3.zero;
     [HideInInspector]
-    public Vector3 MiddlePointLocalPosition = new Vector3(0, 0, 0);
+    public Vector3 MiddlePointLocalPosition = Vector3.zero;
     [HideInInspector]
-    public Vector3 StartPointPosition = new Vector3(0, 0, 0);
+    public Vector3 StartPointPosition = Vector3.zero;
     [HideInInspector]
-    public Vector3 EndPointPosition = new Vector3(0, 0, 0);
+    public Vector3 EndPointPosition = Vector3.zero;
     [HideInInspector]
-    public Vector3 MiddlePointPosition = new Vector3(0, 0, 0);
+    public Vector3 MiddlePointPosition = Vector3.zero;
 
     [HideInInspector]
     public bool isCutOver = false;
@@ -37,27 +37,34 @@ public class CutSkin : MonoBehaviour
     [HideInInspector]
     public bool isParallel = true;
     [HideInInspector]
-    float distance = 0f;
+    public float MeasuredLengthCm = 0f;
+    [HideInInspector]
+    public float MeasuredPathLengthCm = 0f;
+    [HideInInspector]
+    public float MeasuredAngleErrorDeg = 0f;
+    [HideInInspector]
+    public float MeasuredCenterOffsetCm = 0f;
+    [HideInInspector]
+    public int MeasuredSampleCount = 0;
 
+    private float distance = 0f;
     private GameObject startPosition;
     private GameObject endPosition;
+    private readonly List<Vector3> sampledWorldPoints = new List<Vector3>();
+    private readonly List<Vector3> sampledLocalPoints = new List<Vector3>();
 
-    private float MinDistance = 1.5f;
-    private float MaxDistance = 3.5f;
-    private float ParallelThreshold = 0.75f;
+    private const float MinDistance = 1.5f;
+    private const float MaxDistance = 3.5f;
+    private const float ParallelThreshold = 0.75f;
+    private const float SampleMinDistanceMeters = 0.0005f;
+    private const int MeasurementSmoothingRadius = 1;
 
-    void Start()
+    private void Start()
     {
         if (ScalpelTip == null)
         {
             ScalpelTip = GameObject.Find("ScalpelTip");
         }
-
-    }
-
-    void Update()
-    {
-
     }
 
     public IEnumerator WaitForCollisionAndCut()
@@ -72,102 +79,83 @@ public class CutSkin : MonoBehaviour
         {
             NeckSkin.SetActive(false);
         }
-        //Step2Test();
     }
 
     private void CalculateStep2Result()
     {
-        if (isCutOver)
+        if (!isCutOver)
         {
-            isParallel = true;
-            isPositionValid = true;
-            Vector3 StandardLineA = transform.InverseTransformPoint(StandardA.transform.position);
-            Vector3 StandardLineB = transform.InverseTransformPoint(StandardB.transform.position);
-            //Vector3 StandardLineMiddle = (StandardLineA + StandardLineB) / 2;
-            Vector3 StandardDir = (StandardLineB - StandardLineA).normalized;
-            //Vector3 CutPositionA = new Vector3(StartPointPosition.x, 0, StartPointPosition.z);
-            //Vector3 CutPositionB = new Vector3(EndPointPosition.x, 0, EndPointPosition.z);
-            //Vector3 CutPositionMiddle = new Vector3(MiddlePointPosition.x, 0, MiddlePointPosition.z);
-            //Vector3 CutDir = CutPositionB - CutPositionA;
-            Vector3 CutDir = (StartPointLocalPosition - EndPointLocalPosition).normalized; // 计算切割方向
-            float dot = Math.Abs(Vector3.Dot(StandardDir, CutDir));
-            if (dot < ParallelThreshold)
-            {
-                isParallel = false;
-                //skillTrainingManager.SetLogInfo("位置错误：不竖直。" + dot);
-                //Logs.text += "\nPosition Invalid: Not Parallel. " + dot;
-            }
-            else
-            {
-                //skillTrainingManager.SetLogInfo("位置正确：竖直。" + dot);
-                //Logs.text += "\nPosition Valid: Parallel. " + dot;
-            }
-            //float distance = Vector3.Distance(StandardLineMiddle, CutPositionMiddle);
-            //float distance = CutDir.magnitude;
-            distance = 100f * Vector3.Distance(StartPointPosition, EndPointPosition); // 计算切割距离
-            if (distance < MinDistance || distance > MaxDistance)
-            {
-                isPositionValid = false;
-                //skillTrainingManager.SetLogInfo("位置错误：距离不在范围内。" + distance + "cm");
-                //Logs.text += "\nPosition Invalid: Distance out of range. " + distance;
-            }
-            else
-            {
-                //skillTrainingManager.SetLogInfo("位置正确：距离在范围内。" + distance + "cm");   
-                //Logs.text += "\nPosition Valid: Distance in range. " + distance;
-            }
+            return;
+        }
+
+        isParallel = true;
+        isPositionValid = true;
+        ResolveRepresentativeCutPoints();
+
+        if (TrainingMeasurementUtility.AxisMatchScore(MeasuredAngleErrorDeg) < ParallelThreshold)
+        {
+            isParallel = false;
+        }
+
+        distance = MeasuredLengthCm;
+        if (MeasuredLengthCm < MinDistance || MeasuredLengthCm > MaxDistance)
+        {
+            isPositionValid = false;
         }
     }
-
-    private void Step2Test()
-    {
-        startPosition = Instantiate(TestPrefab, transform);
-        startPosition.transform.localPosition = StartPointPosition;
-        startPosition.transform.localScale = new Vector3(2f, 2f, 2f);
-
-        endPosition = Instantiate(TestPrefab, transform);
-        endPosition.transform.localPosition = EndPointPosition;
-        endPosition.transform.localScale = new Vector3(2f, 2f, 2f);
-        skillTrainingManager.SetLogInfo("Step2 Test Done: " + StartPointPosition + " " + EndPointPosition);
-        //Logs.text += "\nStep2 Test Done";
-    }
-
-
-
-
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "ScalpelTip")
+        if (other.gameObject.tag != "ScalpelTip")
         {
-            if (skillTrainingManager.CurrentStep != SkillTrainingManager.TrainingStep.Step2_CutSkinAndTissue) return;
-            StartPointPosition = ScalpelTip.transform.position;
-            StartPointLocalPosition = transform.InverseTransformPoint(ScalpelTip.transform.position);
-            StartPointPosition.y = 0;
-            //skillTrainingManager.SetLogInfo("Start: " + StartPointPosition);
-            //Logs.text += "\nLocal Start: " + StartPointPosition;
-            isCutOver = false;
+            return;
         }
+
+        if (skillTrainingManager.CurrentStep != SkillTrainingManager.TrainingStep.Step2_CutSkinAndTissue)
+        {
+            return;
+        }
+
+        BeginSampling(ScalpelTip.transform.position);
+        isCutOver = false;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag != "ScalpelTip")
+        {
+            return;
+        }
+
+        if (skillTrainingManager.CurrentStep != SkillTrainingManager.TrainingStep.Step2_CutSkinAndTissue)
+        {
+            return;
+        }
+
+        AppendSample(ScalpelTip.transform.position);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "ScalpelTip")
+        if (other.gameObject.tag != "ScalpelTip")
         {
-            if (skillTrainingManager.CurrentStep != SkillTrainingManager.TrainingStep.Step2_CutSkinAndTissue) return;
-            EndPointPosition = ScalpelTip.transform.position;   
-            EndPointLocalPosition = transform.InverseTransformPoint(ScalpelTip.transform.position);
-            EndPointPosition.y = 0;
-            //skillTrainingManager.SetLogInfo("End: " + EndPointPosition);
-            //Logs.text += "\nLocal End: " + EndPointPosition;
-            MiddlePointPosition = (StartPointPosition + EndPointPosition) / 2;
+            return;
         }
+
+        if (skillTrainingManager.CurrentStep != SkillTrainingManager.TrainingStep.Step2_CutSkinAndTissue)
+        {
+            return;
+        }
+
+        AppendSample(ScalpelTip.transform.position);
+        EndPointPosition = ScalpelTip.transform.position;
+        EndPointLocalPosition = TrainingMeasurementUtility.ToMeasurementPlaneLocalPosition(transform, ScalpelTip.transform.position);
+        MiddlePointPosition = GetWorldPointFromMeasurementLocal((StartPointLocalPosition + EndPointLocalPosition) * 0.5f);
     }
 
     public void CutRetry()
     {
-
-    }    
+    }
 
     public void ResetStep2()
     {
@@ -175,15 +163,86 @@ public class CutSkin : MonoBehaviour
         {
             Destroy(startPosition);
         }
+
         if (endPosition != null)
         {
             Destroy(endPosition);
         }
-        StartPointPosition = new Vector3(0, 0, 0);
-        EndPointPosition = new Vector3(0, 0, 0);
-        MiddlePointPosition = new Vector3(0, 0, 0);
+
+        StartPointPosition = Vector3.zero;
+        EndPointPosition = Vector3.zero;
+        MiddlePointPosition = Vector3.zero;
+        StartPointLocalPosition = Vector3.zero;
+        EndPointLocalPosition = Vector3.zero;
+        MiddlePointLocalPosition = Vector3.zero;
+        MeasuredLengthCm = 0f;
+        MeasuredPathLengthCm = 0f;
+        MeasuredAngleErrorDeg = 0f;
+        MeasuredCenterOffsetCm = 0f;
+        MeasuredSampleCount = 0;
+        sampledWorldPoints.Clear();
+        sampledLocalPoints.Clear();
         isCutOver = false;
-        //skillTrainingManager.SetLogInfo("Step2 Reset Done");
-        //Logs.text += "\nStep2 Reset";
-    }   
+    }
+
+    private void BeginSampling(Vector3 worldPoint)
+    {
+        sampledWorldPoints.Clear();
+        sampledLocalPoints.Clear();
+        AppendSample(worldPoint);
+        StartPointPosition = worldPoint;
+        StartPointLocalPosition = TrainingMeasurementUtility.ToMeasurementPlaneLocalPosition(transform, worldPoint);
+    }
+
+    private void AppendSample(Vector3 worldPoint)
+    {
+        Vector3 flattenedLocalPoint = TrainingMeasurementUtility.ToMeasurementPlaneLocalPosition(transform, worldPoint);
+
+        if (sampledWorldPoints.Count > 0 &&
+            Vector3.Distance(sampledLocalPoints[sampledLocalPoints.Count - 1], flattenedLocalPoint) < SampleMinDistanceMeters)
+        {
+            return;
+        }
+
+        sampledWorldPoints.Add(worldPoint);
+        sampledLocalPoints.Add(flattenedLocalPoint);
+        MeasuredSampleCount = sampledLocalPoints.Count;
+    }
+
+    private void ResolveRepresentativeCutPoints()
+    {
+        TrainingMeasurementUtility.CutPathMeasurementResult measurement =
+            TrainingMeasurementUtility.MeasureCutPath(
+                transform,
+                StandardLine,
+                StandardA,
+                StandardB,
+                sampledLocalPoints,
+                AllowedAxes.Both,
+                MeasurementSmoothingRadius,
+                SampleMinDistanceMeters);
+
+        if (!measurement.hasMeasurement)
+        {
+            MeasuredPathLengthCm = 0f;
+            return;
+        }
+
+        StartPointLocalPosition = measurement.startLocalPosition;
+        EndPointLocalPosition = measurement.endLocalPosition;
+        MiddlePointLocalPosition = measurement.middleLocalPosition;
+        StartPointPosition = GetWorldPointFromMeasurementLocal(StartPointLocalPosition);
+        EndPointPosition = GetWorldPointFromMeasurementLocal(EndPointLocalPosition);
+        MiddlePointPosition = GetWorldPointFromMeasurementLocal(MiddlePointLocalPosition);
+        MeasuredLengthCm = measurement.lengthCentimeters;
+        MeasuredPathLengthCm = measurement.pathLengthCentimeters;
+        MeasuredAngleErrorDeg = measurement.angleErrorDegrees;
+        MeasuredCenterOffsetCm = measurement.centerOffsetCentimeters;
+        MeasuredSampleCount = measurement.pointCount;
+    }
+
+    private Vector3 GetWorldPointFromMeasurementLocal(Vector3 localPoint)
+    {
+        return transform.position + transform.rotation * localPoint;
+    }
 }

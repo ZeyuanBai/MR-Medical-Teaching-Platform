@@ -62,9 +62,15 @@ public class InsertTracheal : MonoBehaviour
             yield return null;
         }
 
-        CalculateStep4Result();
+        CompleteInsertion();
         //Step4Test();
 
+    }
+
+    public void CompleteInsertion()
+    {
+        isInsertionOver = true;
+        CalculateStep4Result();
     }
 
     private void CalculateStep4Result()

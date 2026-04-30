@@ -12,6 +12,7 @@ public class SkillTrainingManager : MonoBehaviour
     [Header("UI Control")]
     public CentralUIController centralUIController;
     public TrainingReportManager trainingReportManager;
+    public SessionRecorder sessionRecorder;
 
     [Header("Models")]
     public GameObject SkillTrainingModelTable;
@@ -101,13 +102,22 @@ public class SkillTrainingManager : MonoBehaviour
     private readonly Queue<string> _logQueue = new Queue<string>();
     private const int MaxLogCount = 5;
     private bool _isTimerActive;
+    private Coroutine _trainingFlowCoroutine;
     private Vector3 _markerInitPos;
     private Vector3 _scalpelInitPos;
     private Vector3 _trachealTubeInitPos;
+    private readonly float[] _stepStartTimes = new float[5];
+    private readonly float[] _stepEndTimes = new float[5];
+    private readonly float[] _stepDurations = new float[5];
 
     private const string ScenarioName = "气管切开训练";
     private const string StartHint = "按下“开始”按键以开始练习";
     private const string ReportBlockedHint = "请完成练习后再查看报告";
+    private const string TrainingBusyHint = "训练正在进行中，请先完成当前步骤。";
+    private const string StepMismatchHint = "当前不在对应训练步骤，请按流程完成当前操作。";
+
+    private const string TransparentModeOnText = "透明模式：关";
+    private const string TransparentModeOffText = "透明模式：开";
 
     public enum TrainingStep
     {
@@ -120,25 +130,42 @@ public class SkillTrainingManager : MonoBehaviour
 
     private void Start()
     {
-        SkillTrainingStartBtn.onClick.AddListener(OnBtnPressedStartSkillTraining);
-        SkillTrainingResetBtn.onClick.AddListener(OnBtnPressedResetSkillTraining);
-        TransparentModeBtn.onClick.AddListener(OnBtnPressedTransparentMode);
-        ViewReportBtn.onClick.AddListener(OnBtnPressedViewReport);
+        BindButton(SkillTrainingStartBtn, OnBtnPressedStartSkillTraining, nameof(SkillTrainingStartBtn));
+        BindButton(SkillTrainingResetBtn, OnBtnPressedResetSkillTraining, nameof(SkillTrainingResetBtn));
+        BindButton(TransparentModeBtn, OnBtnPressedTransparentMode, nameof(TransparentModeBtn));
+        BindButton(ViewReportBtn, OnBtnPressedViewReport, nameof(ViewReportBtn));
 
-        DrawTextureClearBtn.onClick.AddListener(OnBtnPressedClearDrawTexture);
-        DetermineDrawPositionBtn.onClick.AddListener(OnBtnPressedDetermineDrawPosition);
-        CutSkinRetryBtn.onClick.AddListener(OnBtnPressedCutSkinRetry);
-        CutSkinOverBtn.onClick.AddListener(OnBtnPressedCutSkinOver);
-        CutAirwayRetryBtn.onClick.AddListener(OnBtnPressedCutAirwayRetry);
-        CutAirwayOverBtn.onClick.AddListener(OnBtnPressedCutAirwayOver);
-        TrachealReplaceBtn.onClick.AddListener(OnBtnPressedTrachealReplace);
-        InsertionOverBtn.onClick.AddListener(OnBtnPressedInsertionOver);
+        BindButton(DrawTextureClearBtn, OnBtnPressedClearDrawTexture, nameof(DrawTextureClearBtn));
+        BindButton(DetermineDrawPositionBtn, OnBtnPressedDetermineDrawPosition, nameof(DetermineDrawPositionBtn));
+        BindButton(CutSkinRetryBtn, OnBtnPressedCutSkinRetry, nameof(CutSkinRetryBtn));
+        BindButton(CutSkinOverBtn, OnBtnPressedCutSkinOver, nameof(CutSkinOverBtn));
+        BindButton(CutAirwayRetryBtn, OnBtnPressedCutAirwayRetry, nameof(CutAirwayRetryBtn));
+        BindButton(CutAirwayOverBtn, OnBtnPressedCutAirwayOver, nameof(CutAirwayOverBtn));
+        BindButton(TrachealReplaceBtn, OnBtnPressedTrachealReplace, nameof(TrachealReplaceBtn));
+        BindButton(InsertionOverBtn, OnBtnPressedInsertionOver, nameof(InsertionOverBtn));
 
         if (positionDetermination == null && DrawRegion != null)
         {
             positionDetermination = DrawRegion.GetComponent<PositionDetermination>();
         }
 
+        if (cutSkin == null && CutRegion != null)
+        {
+            cutSkin = CutRegion.GetComponent<CutSkin>();
+        }
+
+        if (cutAirway == null && AirwayRegion != null)
+        {
+            cutAirway = AirwayRegion.GetComponent<CutAirway>();
+        }
+
+        if (insertTracheal == null && TrachealRegion != null)
+        {
+            insertTracheal = TrachealRegion.GetComponent<InsertTracheal>();
+        }
+
+        ResolveSessionRecorder();
+        ResetStepTimingData();
         ResetTraining();
     }
 
@@ -153,6 +180,7 @@ public class SkillTrainingManager : MonoBehaviour
         if (_isTimerActive)
         {
             TrainingTime += Time.deltaTime;
+            CaptureActiveStepPoseSample();
         }
     }
 
@@ -167,9 +195,12 @@ public class SkillTrainingManager : MonoBehaviour
 
     private IEnumerator TrainingFlow()
     {
-        while ((int)CurrentStep <= (int)TrainingStep.Step4_InsertTracheal)
+        while (CurrentStep != TrainingStep.Idle && (int)CurrentStep <= (int)TrainingStep.Step4_InsertTracheal)
         {
-            switch (CurrentStep)
+            TrainingStep activeStep = CurrentStep;
+            BeginStepTracking(activeStep);
+
+            switch (activeStep)
             {
                 case TrainingStep.Step1_PositionDetermination:
                     SetLogInfo("步骤1：确定切割位置");
@@ -193,16 +224,23 @@ public class SkillTrainingManager : MonoBehaviour
                     SetLogInfo("步骤4：插入气管套管");
                     SetLogInfo("将气管套管插入气管内，注意保持平行，避免损伤后壁。");
                     yield return StartCoroutine(ExecuteStep4());
-                    ResetTraining();
+                    CompleteStepTracking(activeStep);
+                    CurrentStep = TrainingStep.Idle;
+                    _trainingFlowCoroutine = null;
                     yield break;
             }
 
+            CompleteStepTracking(activeStep);
             NextStep();
         }
+
+        _trainingFlowCoroutine = null;
     }
 
     private IEnumerator ExecuteStep1()
     {
+        SetNeckSkinVisible(true);
+
         if (Marker != null)
         {
             Marker.SetActive(true);
@@ -236,7 +274,7 @@ public class SkillTrainingManager : MonoBehaviour
         if (Tissue != null) Tissue.SetActive(false);
         if (SkinCut != null) SkinCut.SetActive(true);
         if (TissueCut != null) TissueCut.SetActive(true);
-        if (NeckSkin != null) NeckSkin.SetActive(false);
+        SetNeckSkinVisible(false);
         if (CwClearAll != null) CwClearAll.ClearAll();
     }
 
@@ -269,20 +307,32 @@ public class SkillTrainingManager : MonoBehaviour
     {
         if (CurrentStep != TrainingStep.Idle)
         {
+            SetLogInfo(TrainingBusyHint);
             return;
         }
 
+        ResetTraining();
         CurrentStep = TrainingStep.Step1_PositionDetermination;
+        SetLogInfo("训练开始。");
 
         if (trainingReportManager != null)
         {
             trainingReportManager.BeginSession(ScenarioName);
+            sessionRecorder = trainingReportManager.sessionRecorder;
             trainingReportManager.isTrainingOver = false;
+        }
+        else
+        {
+            ResolveSessionRecorder();
+            if (sessionRecorder != null)
+            {
+                sessionRecorder.BeginSession(ScenarioName);
+            }
         }
 
         TrainingTime = 0f;
         _isTimerActive = true;
-        StartCoroutine(TrainingFlow());
+        _trainingFlowCoroutine = StartCoroutine(TrainingFlow());
     }
 
     private void NextStep()
@@ -312,20 +362,38 @@ public class SkillTrainingManager : MonoBehaviour
     public void OnBtnPressedClearDrawTexture()
     {
         if (CwClearAll != null) CwClearAll.ClearAll();
+        if (positionDetermination == null)
+        {
+            Debug.LogWarning($"{nameof(SkillTrainingManager)} cannot clear step 1 because PositionDetermination is missing.", this);
+            SetLogInfo("定位组件未找到，无法清除标记。");
+            return;
+        }
+
         positionDetermination.ResetStep1();
         positionDetermination.isPositionDetermined = false;
+        SetLogInfo("已清除定位标记，请重新绘制切开位置。");
     }
 
     public void OnBtnPressedDetermineDrawPosition()
     {
         if (CurrentStep != TrainingStep.Step1_PositionDetermination)
         {
+            SetLogInfo(StepMismatchHint);
             return;
         }
 
-        positionDetermination.isPositionDetermined = true;
-        cutSkin.isCutOver = false;
-        cutSkin.ResetStep2();
+        if (positionDetermination != null)
+        {
+            positionDetermination.isPositionDetermined = true;
+        }
+
+        if (cutSkin != null)
+        {
+            cutSkin.isCutOver = false;
+            cutSkin.ResetStep2();
+        }
+
+        SetLogInfo("步骤1已确认，准备进入步骤2：切开皮肤和组织。");
     }
 
     public void OnBtnPressedCutSkinRetry()
@@ -334,21 +402,44 @@ public class SkillTrainingManager : MonoBehaviour
         {
             trainingReportManager.RecordRetry("step2", "步骤二重新切开皮肤和组织。");
         }
+        else if (sessionRecorder != null)
+        {
+            sessionRecorder.RecordRetry("step2", "步骤二重新切开皮肤和组织。");
+        }
+
+        if (cutSkin == null)
+        {
+            Debug.LogWarning($"{nameof(SkillTrainingManager)} cannot retry step 2 because CutSkin is missing.", this);
+            SetLogInfo("皮肤切开组件未找到，无法重试步骤2。");
+            return;
+        }
 
         cutSkin.isCutOver = false;
         cutSkin.ResetStep2();
+        SetNeckSkinVisible(true);
+        SetLogInfo("已重置步骤2，请重新切开皮肤和组织。");
     }
 
     public void OnBtnPressedCutSkinOver()
     {
         if (CurrentStep != TrainingStep.Step2_CutSkinAndTissue)
         {
+            SetLogInfo(StepMismatchHint);
             return;
         }
 
-        cutSkin.isCutOver = true;
-        cutAirway.isCutOver = false;
-        cutAirway.ResetStep3();
+        if (cutSkin != null)
+        {
+            cutSkin.isCutOver = true;
+        }
+
+        if (cutAirway != null)
+        {
+            cutAirway.isCutOver = false;
+            cutAirway.ResetStep3();
+        }
+
+        SetLogInfo("步骤2已完成，准备进入步骤3：切开气管。");
     }
 
     public void OnBtnPressedCutAirwayRetry()
@@ -357,21 +448,43 @@ public class SkillTrainingManager : MonoBehaviour
         {
             trainingReportManager.RecordRetry("step3", "步骤三重新切开气管。");
         }
+        else if (sessionRecorder != null)
+        {
+            sessionRecorder.RecordRetry("step3", "步骤三重新切开气管。");
+        }
+
+        if (cutAirway == null)
+        {
+            Debug.LogWarning($"{nameof(SkillTrainingManager)} cannot retry step 3 because CutAirway is missing.", this);
+            SetLogInfo("气管切开组件未找到，无法重试步骤3。");
+            return;
+        }
 
         cutAirway.isCutOver = false;
         cutAirway.ResetStep3();
+        SetLogInfo("已重置步骤3，请重新切开气管。");
     }
 
     public void OnBtnPressedCutAirwayOver()
     {
         if (CurrentStep != TrainingStep.Step3_CutAirway)
         {
+            SetLogInfo(StepMismatchHint);
             return;
         }
 
-        cutAirway.isCutOver = true;
-        insertTracheal.isInsertionOver = false;
-        insertTracheal.ResetStep4();
+        if (cutAirway != null)
+        {
+            cutAirway.isCutOver = true;
+        }
+
+        if (insertTracheal != null)
+        {
+            insertTracheal.isInsertionOver = false;
+            insertTracheal.ResetStep4();
+        }
+
+        SetLogInfo("步骤3已完成，准备进入步骤4：插入气管套管。");
     }
 
     public void OnBtnPressedTrachealReplace()
@@ -380,23 +493,51 @@ public class SkillTrainingManager : MonoBehaviour
         {
             trainingReportManager.RecordRetry("step4", "步骤四重新放置气管套管。");
         }
+        else if (sessionRecorder != null)
+        {
+            sessionRecorder.RecordRetry("step4", "步骤四重新放置气管套管。");
+        }
 
-        insertTracheal.isTrachealInserted = false;
+        if (insertTracheal != null)
+        {
+            insertTracheal.isTrachealInserted = false;
+        }
+
         if (Tracheal != null)
         {
             Tracheal.transform.position = _trachealTubeInitPos;
         }
+
+        SetLogInfo("已重置气管套管位置，请重新插入。");
     }
 
     public void OnBtnPressedInsertionOver()
     {
-        if (CurrentStep != TrainingStep.Step4_InsertTracheal)
+        if (CurrentStep != TrainingStep.Step4_InsertTracheal && CurrentStep != TrainingStep.Idle)
         {
+            SetLogInfo(StepMismatchHint);
             return;
         }
 
-        insertTracheal.isInsertionOver = true;
+        if (insertTracheal == null)
+        {
+            Debug.LogWarning($"{nameof(SkillTrainingManager)} cannot complete step 4 because InsertTracheal is missing.", this);
+            SetLogInfo("插管组件未找到，无法完成步骤4。");
+            return;
+        }
+
+        CurrentStep = TrainingStep.Step4_InsertTracheal;
+        insertTracheal.CompleteInsertion();
         _isTimerActive = false;
+        CompleteStepTracking(TrainingStep.Step4_InsertTracheal);
+        CompleteSessionRecording();
+        CurrentStep = TrainingStep.Idle;
+
+        if (_trainingFlowCoroutine != null)
+        {
+            StopCoroutine(_trainingFlowCoroutine);
+            _trainingFlowCoroutine = null;
+        }
 
         if (trainingReportManager != null)
         {
@@ -404,31 +545,57 @@ public class SkillTrainingManager : MonoBehaviour
             trainingReportManager.TrainingTime = TrainingTime;
             trainingReportManager.ShowReport();
         }
+
+        SetLogInfo(insertTracheal.isPositionValid
+            ? "步骤4已完成，训练报告已生成。"
+            : "步骤4已结束，但未检测到有效插管，请查看训练报告。");
     }
 
     public void OnBtnPressedResetSkillTraining()
     {
         ResetTraining();
+        SetLogInfo("训练已重置。");
     }
 
     public void ResetTraining()
     {
+        if (_trainingFlowCoroutine != null)
+        {
+            StopCoroutine(_trainingFlowCoroutine);
+            _trainingFlowCoroutine = null;
+        }
+
         CurrentStep = TrainingStep.Idle;
+        _logQueue.Clear();
         ActiveMedicalInstruments(true);
+        TransparentMode = false;
+        UpdateTransparentModeButtonText();
 
-        if (NeckSkin != null) NeckSkin.SetActive(true);
-
-        positionDetermination.ResetStep1();
-        positionDetermination.isPositionDetermined = false;
+        if (positionDetermination != null)
+        {
+            positionDetermination.ResetStep1();
+            positionDetermination.isPositionDetermined = false;
+        }
 
         if (CwClearAll != null) CwClearAll.ClearAll();
 
-        cutSkin.ResetStep2();
-        cutSkin.isCutOver = false;
-        cutAirway.ResetStep3();
-        cutAirway.isCutOver = false;
-        insertTracheal.ResetStep4();
-        insertTracheal.isTrachealInserted = false;
+        if (cutSkin != null)
+        {
+            cutSkin.ResetStep2();
+            cutSkin.isCutOver = false;
+        }
+
+        if (cutAirway != null)
+        {
+            cutAirway.ResetStep3();
+            cutAirway.isCutOver = false;
+        }
+
+        if (insertTracheal != null)
+        {
+            insertTracheal.ResetStep4();
+            insertTracheal.isTrachealInserted = false;
+        }
 
         if (Skin != null) Skin.SetActive(true);
         if (Airway != null) Airway.SetActive(true);
@@ -436,41 +603,93 @@ public class SkillTrainingManager : MonoBehaviour
         if (SkinCut != null) SkinCut.SetActive(false);
         if (AirwayCut != null) AirwayCut.SetActive(false);
         if (TissueCut != null) TissueCut.SetActive(false);
-        if (NeckSkin != null) NeckSkin.SetActive(true);
+        SetTransparentModeMaterials(false);
+        SetNeckSkinVisible(true);
 
         TrainingTime = 0f;
         _isTimerActive = false;
+        ResetStepTimingData();
 
         if (trainingReportManager != null)
         {
             trainingReportManager.TrainingTime = 0f;
-            if (!trainingReportManager.isTrainingOver)
-            {
-                trainingReportManager.ResetReportState();
-            }
+            trainingReportManager.ResetReportState();
+            trainingReportManager.ResetSessionState();
+        }
+        else if (sessionRecorder != null)
+        {
+            sessionRecorder.ResetRecorder();
         }
 
         SetLogInfo(StartHint);
     }
 
+    public float GetStepStartTime(TrainingStep step)
+    {
+        int index = (int)step;
+        if (index <= 0 || index >= _stepStartTimes.Length)
+        {
+            return 0f;
+        }
+
+        return Mathf.Max(0f, _stepStartTimes[index]);
+    }
+
+    public float GetStepEndTime(TrainingStep step)
+    {
+        int index = (int)step;
+        if (index <= 0 || index >= _stepEndTimes.Length)
+        {
+            return 0f;
+        }
+
+        return Mathf.Max(0f, _stepEndTimes[index]);
+    }
+
+    public float GetStepDuration(TrainingStep step)
+    {
+        int index = (int)step;
+        if (index <= 0 || index >= _stepDurations.Length)
+        {
+            return 0f;
+        }
+
+        return Mathf.Max(0f, _stepDurations[index]);
+    }
+
     public void OnBtnPressedTransparentMode()
     {
         TransparentMode = !TransparentMode;
-        if (TransparentModeBtnText != null)
-        {
-            TransparentModeBtnText.text = TransparentMode
-                ? "透明模式：开"
-                : "透明模式：关";
-        }
+        UpdateTransparentModeButtonText();
 
         SetTransparentModeMaterials(TransparentMode);
+    }
+
+    private void UpdateTransparentModeButtonText()
+    {
+        if (TransparentModeBtnText == null)
+        {
+            return;
+        }
+
+        TransparentModeBtnText.text = TransparentMode
+            ? TransparentModeOnText
+            : TransparentModeOffText;
     }
 
     public void OnBtnPressedViewReport()
     {
         if (CurrentStep == TrainingStep.Idle)
         {
-            centralUIController.OnBtnPressedViewReport();
+            if (centralUIController != null)
+            {
+                centralUIController.OnBtnPressedViewReport();
+                SetLogInfo("正在查看训练报告。");
+            }
+            else
+            {
+                SetLogInfo("界面控制器未找到，无法打开报告页面。");
+            }
         }
         else
         {
@@ -538,9 +757,42 @@ public class SkillTrainingManager : MonoBehaviour
         AssignMaterial(TissueCut, TransTissueMat);
     }
 
-    private void AssignMaterial(GameObject target, Material material)
+    private void SetNeckSkinVisible(bool visible)
     {
-        if (target == null || material == null)
+        SetObjectAndAncestorsActive(NeckSkin, visible);
+
+        if (cutSkin != null && cutSkin.NeckSkin != null && cutSkin.NeckSkin != NeckSkin)
+        {
+            SetObjectAndAncestorsActive(cutSkin.NeckSkin, visible);
+        }
+
+        SetDirectRenderersEnabled(NeckSkin, visible);
+
+        if (cutSkin != null && cutSkin.NeckSkin != null && cutSkin.NeckSkin != NeckSkin)
+        {
+            SetDirectRenderersEnabled(cutSkin.NeckSkin, visible);
+        }
+    }
+
+    private void SetObjectAndAncestorsActive(GameObject target, bool active)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        Transform current = target.transform;
+        Transform stopAt = SkillTrainingModelTable != null ? SkillTrainingModelTable.transform : null;
+        while (current != null && current != stopAt)
+        {
+            current.gameObject.SetActive(active);
+            current = current.parent;
+        }
+    }
+
+    private void SetDirectRenderersEnabled(GameObject target, bool enabled)
+    {
+        if (target == null)
         {
             return;
         }
@@ -548,7 +800,225 @@ public class SkillTrainingManager : MonoBehaviour
         Renderer renderer = target.GetComponent<Renderer>();
         if (renderer != null)
         {
-            renderer.material = material;
+            renderer.enabled = enabled;
+        }
+    }
+
+    private void AssignMaterial(GameObject target, Material material)
+    {
+        if (target == null || material == null)
+        {
+            return;
+        }
+
+        Renderer[] renderers = target.GetComponentsInChildren<Renderer>(true);
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            renderers[i].material = material;
+        }
+    }
+
+    private void BindButton(Button button, UnityEngine.Events.UnityAction action, string buttonName)
+    {
+        if (button == null)
+        {
+            Debug.LogWarning($"{nameof(SkillTrainingManager)} missing button reference: {buttonName}", this);
+            return;
+        }
+
+        button.onClick.RemoveListener(action);
+        button.onClick.AddListener(action);
+    }
+
+    private void BeginStepTracking(TrainingStep step)
+    {
+        int index = (int)step;
+        if (index <= 0 || index >= _stepStartTimes.Length)
+        {
+            return;
+        }
+
+        _stepStartTimes[index] = TrainingTime;
+        _stepEndTimes[index] = -1f;
+        _stepDurations[index] = 0f;
+        if (sessionRecorder != null)
+        {
+            sessionRecorder.StartStep(GetStepId(step), GetStepName(step), index);
+        }
+    }
+
+    private void CompleteStepTracking(TrainingStep step)
+    {
+        int index = (int)step;
+        if (index <= 0 || index >= _stepEndTimes.Length || _stepStartTimes[index] < 0f)
+        {
+            return;
+        }
+
+        _stepEndTimes[index] = TrainingTime;
+        _stepDurations[index] = Mathf.Max(0f, _stepEndTimes[index] - _stepStartTimes[index]);
+        CompleteStepRecording(step, index);
+    }
+
+    private void ResetStepTimingData()
+    {
+        for (int i = 0; i < _stepStartTimes.Length; i++)
+        {
+            _stepStartTimes[i] = -1f;
+            _stepEndTimes[i] = -1f;
+            _stepDurations[i] = 0f;
+        }
+    }
+
+    private void ResolveSessionRecorder()
+    {
+        if (sessionRecorder != null)
+        {
+            return;
+        }
+
+        if (trainingReportManager != null)
+        {
+            sessionRecorder = trainingReportManager.sessionRecorder;
+        }
+
+        if (sessionRecorder == null)
+        {
+            sessionRecorder = GetComponent<SessionRecorder>();
+        }
+
+        if (sessionRecorder == null)
+        {
+            sessionRecorder = FindObjectOfType<SessionRecorder>();
+        }
+    }
+
+    private void CaptureActiveStepPoseSample()
+    {
+        if (sessionRecorder == null)
+        {
+            return;
+        }
+
+        switch (CurrentStep)
+        {
+            case TrainingStep.Step1_PositionDetermination:
+                sessionRecorder.CapturePoseSample("step1", TrackedToolType.Marker, ResolveToolTransform(MarkerTipVisual, Marker), ResolveStepReference(DrawRegion));
+                break;
+            case TrainingStep.Step2_CutSkinAndTissue:
+                sessionRecorder.CapturePoseSample("step2", TrackedToolType.Scalpel, ResolveToolTransform(ScalpelVisual, Scalpel), ResolveStepReference(CutRegion));
+                break;
+            case TrainingStep.Step3_CutAirway:
+                sessionRecorder.CapturePoseSample("step3", TrackedToolType.Scalpel, ResolveToolTransform(ScalpelVisual, Scalpel), ResolveStepReference(AirwayRegion));
+                break;
+            case TrainingStep.Step4_InsertTracheal:
+                sessionRecorder.CapturePoseSample("step4", TrackedToolType.TrachealTube, ResolveToolTransform(TrachealVisual, Tracheal), ResolveStepReference(TrachealRegion));
+                break;
+        }
+    }
+
+    private Transform ResolveToolTransform(GameObject preferredTip, GameObject fallbackRoot)
+    {
+        if (preferredTip != null)
+        {
+            return preferredTip.transform;
+        }
+
+        return fallbackRoot != null ? fallbackRoot.transform : null;
+    }
+
+    private Transform ResolveStepReference(GameObject stepRegion)
+    {
+        if (stepRegion != null)
+        {
+            return stepRegion.transform;
+        }
+
+        return SkillTrainingModelTable != null ? SkillTrainingModelTable.transform : transform;
+    }
+
+    private void CompleteStepRecording(TrainingStep step, int stepIndex)
+    {
+        if (sessionRecorder == null)
+        {
+            return;
+        }
+
+        string stepId = GetStepId(step);
+        bool completed = IsStepCompleted(step);
+        StepEvaluationResult result = new StepEvaluationResult
+        {
+            stepId = stepId,
+            stepName = GetStepName(step),
+            stepIndex = stepIndex,
+            startTimeSeconds = GetStepStartTime(step),
+            endTimeSeconds = GetStepEndTime(step),
+            durationSeconds = GetStepDuration(step),
+            completed = completed,
+            completionRatio = completed ? 1f : 0f,
+            status = completed ? TrainingOverallStatus.Passed : TrainingOverallStatus.Incomplete,
+            isRequired = true
+        };
+
+        sessionRecorder.CompleteStep(result);
+    }
+
+    private void CompleteSessionRecording()
+    {
+        if (sessionRecorder != null)
+        {
+            sessionRecorder.CompleteSession();
+        }
+    }
+
+    private bool IsStepCompleted(TrainingStep step)
+    {
+        switch (step)
+        {
+            case TrainingStep.Step1_PositionDetermination:
+                return positionDetermination != null && positionDetermination.isPositionDetermined;
+            case TrainingStep.Step2_CutSkinAndTissue:
+                return cutSkin != null && cutSkin.isCutOver;
+            case TrainingStep.Step3_CutAirway:
+                return cutAirway != null && cutAirway.isCutOver;
+            case TrainingStep.Step4_InsertTracheal:
+                return insertTracheal != null && insertTracheal.isInsertionOver;
+            default:
+                return false;
+        }
+    }
+
+    private string GetStepId(TrainingStep step)
+    {
+        switch (step)
+        {
+            case TrainingStep.Step1_PositionDetermination:
+                return "step1";
+            case TrainingStep.Step2_CutSkinAndTissue:
+                return "step2";
+            case TrainingStep.Step3_CutAirway:
+                return "step3";
+            case TrainingStep.Step4_InsertTracheal:
+                return "step4";
+            default:
+                return "idle";
+        }
+    }
+
+    private string GetStepName(TrainingStep step)
+    {
+        switch (step)
+        {
+            case TrainingStep.Step1_PositionDetermination:
+                return "步骤一：确定切割位置";
+            case TrainingStep.Step2_CutSkinAndTissue:
+                return "步骤二：切开皮肤和组织";
+            case TrainingStep.Step3_CutAirway:
+                return "步骤三：切开气管";
+            case TrainingStep.Step4_InsertTracheal:
+                return "步骤四：插入气管套管";
+            default:
+                return "空闲";
         }
     }
 }

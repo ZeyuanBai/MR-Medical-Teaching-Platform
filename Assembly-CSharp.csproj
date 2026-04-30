@@ -59,7 +59,7 @@
     <UnityVersion>2022.3.48f1c1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\86150\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.2.1\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\86150\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.2.2\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.48f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.48f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
@@ -88,6 +88,7 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\VolumeRenderedObject.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\DA.cs" />
     <Compile Include="Assets\Scripts\SpatialAnchorManager.cs" />
+    <Compile Include="Assets\Scripts\TrainingEvaluationModels.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\TM.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\GUI\Components\RuntimeFileBrowserComponent.cs" />
     <Compile Include="Assets\Scripts\DisableInertia.cs" />
@@ -101,12 +102,14 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Utils\HistogramTextureGenerator.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\DatasetImporterUtility.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\CutoutSphere.cs" />
+    <Compile Include="Assets\Scripts\ScoreEngine.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\SL.cs" />
     <Compile Include="Assets\Scripts\AnatomyTeachingManager.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Progress\ProgressView.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Image\PixelData.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\VR.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Segmentation\SegmentationLabel.cs" />
+    <Compile Include="Assets\Scripts\ResearchExporter.cs" />
     <Compile Include="Assets\Scripts\SpatialAnchor.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\UT.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Progress\ProgressHandler.cs" />
@@ -114,6 +117,7 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\Tag.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\IDicomStreamMember.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\Nifti.NET\NiftiHeader.cs" />
+    <Compile Include="Assets\Scripts\SessionRecorder.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Registry\UidDictionaryEntry.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\VolumeObjectFactory.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\GUI\IMGUI\ColourPicker.cs" />
@@ -178,6 +182,7 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\ImageSequenceImporter\Interface\IImageSequenceImporter.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Registry\VM.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\ImageFileImporter\Nifti.NET\NiftiImporter.cs" />
+    <Compile Include="Assets\Scripts\RubricConfig.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\RenderMode.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\CrossSectionManager.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\Utilities\DatasetFormatUtilities.cs" />
@@ -193,6 +198,7 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\FL.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\ImageFileImporter\SimpleITK\SimpleITKImageFileImporter.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\SampleScene\CameraController.cs" />
+    <Compile Include="Assets\Scripts\TrainingMeasurementUtility.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\TransferFunction\TransferFunctionDatabase.cs" />
     <Compile Include="Assets\Scripts\SystemIntroductionManager.cs" />
     <Compile Include="Assets\Scripts\SkillTrainingManager.cs" />
