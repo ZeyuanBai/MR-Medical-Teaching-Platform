@@ -109,12 +109,14 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Image\PixelData.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\VR.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Segmentation\SegmentationLabel.cs" />
+    <Compile Include="Assets\Scripts\MetaMxInkRuntime.cs" />
     <Compile Include="Assets\Scripts\ResearchExporter.cs" />
     <Compile Include="Assets\Scripts\SpatialAnchor.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\UT.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Progress\ProgressHandler.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\LO.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\Tag.cs" />
+    <Compile Include="Assets\Logitech\Scripts\MxInkHandler.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\IDicomStreamMember.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\Nifti.NET\NiftiHeader.cs" />
     <Compile Include="Assets\Scripts\SessionRecorder.cs" />
@@ -143,10 +145,13 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeQueries\VolumeRaycaster.cs" />
     <Compile Include="Assets\Scripts\CaseOfNeckMassAnatomyManager.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\UL.cs" />
+    <Compile Include="Assets\Logitech\Scripts\LineDrawing.cs" />
+    <Compile Include="Assets\Logitech\Scripts\StylusHandler.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\CharacterRepertoire.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\Type\PersonName.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\CrossSectionPlane.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Registry\DataElementDictionaryEntry.cs" />
+    <Compile Include="Assets\Scripts\RightHandMxInkSwitcher.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\ST.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Segmentation\SegmentationBuilder.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\ImageFileImporter\Interface\IImageFileImporter.cs" />
@@ -179,6 +184,7 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DicomException.cs" />
     <Compile Include="Assets\Scripts\PositionDetermination.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\CutoutBox.cs" />
+    <Compile Include="Assets\Logitech\OpenXR_InteractionProfile\LogitechMxInkProfile.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\ImageSequenceImporter\Interface\IImageSequenceImporter.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Registry\VM.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\ImageFileImporter\Nifti.NET\NiftiImporter.cs" />
@@ -190,6 +196,7 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\DataSet\Sequence.cs" />
     <Compile Include="Assets\Scripts\InsertTracheal.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\DataSet\NestedDataSet.cs" />
+    <Compile Include="Assets\Scripts\RightHandDeviceDetector.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\ByteConvert.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\OW.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\Nifti.NET\Nifti.cs" />
@@ -204,6 +211,7 @@
     <Compile Include="Assets\Scripts\SkillTrainingManager.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\OF.cs" />
     <Compile Include="Assets\Scripts\PlaneTransformBind.cs" />
+    <Compile Include="Assets\Logitech\Scripts\DeviceHandler.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\GUI\Components\EditSliceGUI.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\GUI\Components\RuntimeGUI.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\CrossSectionObject.cs" />
@@ -1580,12 +1588,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Meta.WitAi.Editor">
-      <HintPath>Library\ScriptAssemblies\Meta.WitAi.Editor.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="MCPForUnity.Runtime">
       <HintPath>Library\ScriptAssemblies\MCPForUnity.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Meta.WitAi.Editor">
+      <HintPath>Library\ScriptAssemblies\Meta.WitAi.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Oculus.Haptics">
