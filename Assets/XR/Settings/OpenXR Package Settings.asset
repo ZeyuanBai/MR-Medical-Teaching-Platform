@@ -152,32 +152,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5019471fb2174e5c852ecd4047163007, type: 3}
   m_Name: HandInteractionProfile Standalone
   m_EditorClassIdentifier: 
-  m_enabled: 0
+  m_enabled: 1
   nameUi: Hand Interaction Profile
   version: 0.0.1
   featureIdInternal: com.unity.openxr.feature.input.handinteraction
   openxrExtensionStrings: XR_EXT_hand_interaction
   company: Unity
-  priority: 0
-  required: 0
---- !u!114 &-5187075803309429404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6ffb8ef72016454589ac82b355a0897, type: 3}
-  m_Name: LogitechMxInkControllerProfile Standalone
-  m_EditorClassIdentifier: 
-  m_enabled: 0
-  nameUi: Logitech MX Ink Stylus Interaction Profile
-  version: 1.0.0
-  featureIdInternal: com.unity.openxr.feature.input.logitechmxink
-  openxrExtensionStrings: XR_LOGITECH_mx_ink_stylus_interaction
-  company: Logitech
   priority: 0
   required: 0
 --- !u!114 &-4296465336006108997
@@ -220,6 +200,26 @@ MonoBehaviour:
   company: Unity
   priority: 0
   required: 0
+--- !u!114 &-3622278283579531729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ffb8ef72016454589ac82b355a0897, type: 3}
+  m_Name: LogitechMxInkControllerProfile Android
+  m_EditorClassIdentifier: 
+  m_enabled: 0
+  nameUi: Logitech MX Ink Stylus Interaction Profile
+  version: 1.0.0
+  featureIdInternal: com.unity.openxr.feature.input.logitechmxink
+  openxrExtensionStrings: XR_LOGITECH_mx_ink_stylus_interaction
+  company: Logitech
+  priority: 0
+  required: 0
 --- !u!114 &-3243996647000939480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,7 +239,7 @@ MonoBehaviour:
   - {fileID: -4296465336006108997}
   - {fileID: -8081384190001910468}
   - {fileID: 5125762260428201023}
-  - {fileID: 3185420887340457184}
+  - {fileID: -3622278283579531729}
   - {fileID: -7234698246045301676}
   - {fileID: 8288254247209853969}
   - {fileID: -431931401999195421}
@@ -622,26 +622,6 @@ MonoBehaviour:
   priority: 0
   required: 0
   ignoreValidationErrors: 0
---- !u!114 &3185420887340457184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6ffb8ef72016454589ac82b355a0897, type: 3}
-  m_Name: LogitechMxInkControllerProfile Android
-  m_EditorClassIdentifier: 
-  m_enabled: 0
-  nameUi: Logitech MX Ink Stylus Interaction Profile
-  version: 1.0.0
-  featureIdInternal: com.unity.openxr.feature.input.logitechmxink
-  openxrExtensionStrings: XR_LOGITECH_mx_ink_stylus_interaction
-  company: Logitech
-  priority: 0
-  required: 0
 --- !u!114 &3526874758712767435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -654,7 +634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d28f705476c80d47acb3dfade3d3142, type: 3}
   m_Name: MetaXRFoveationFeature Standalone
   m_EditorClassIdentifier: 
-  m_enabled: 1
+  m_enabled: 0
   nameUi: Meta XR Foveation
   version: 1.0.0
   featureIdInternal: com.meta.openxr.feature.foveation
@@ -683,7 +663,7 @@ MonoBehaviour:
   - {fileID: -8993394910771429095}
   - {fileID: 7831343091718184274}
   - {fileID: 9017521280469071088}
-  - {fileID: -5187075803309429404}
+  - {fileID: 5130996862336765767}
   - {fileID: -3821698941293322670}
   - {fileID: -2476920483802799619}
   - {fileID: 1278139550653552318}
@@ -864,6 +844,26 @@ MonoBehaviour:
   featureIdInternal: com.unity.openxr.feature.input.khrsimpleprofile
   openxrExtensionStrings: 
   company: Unity
+  priority: 0
+  required: 0
+--- !u!114 &5130996862336765767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ffb8ef72016454589ac82b355a0897, type: 3}
+  m_Name: LogitechMxInkControllerProfile Standalone
+  m_EditorClassIdentifier: 
+  m_enabled: 1
+  nameUi: Logitech MX Ink Stylus Interaction Profile
+  version: 1.0.0
+  featureIdInternal: com.unity.openxr.feature.input.logitechmxink
+  openxrExtensionStrings: XR_LOGITECH_mx_ink_stylus_interaction
+  company: Logitech
   priority: 0
   required: 0
 --- !u!114 &5389108917096915037

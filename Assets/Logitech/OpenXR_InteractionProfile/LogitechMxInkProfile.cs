@@ -328,24 +328,24 @@ namespace UnityEngine.XR.OpenXR.Features.Interactions
                         }
                     },
                     // Device Pose
-                    new ActionConfig()
-                    {
-                        name = "devicePose",
-                        localizedName = "Device Pose",
-                        type = ActionType.Pose,
-                        usages = new List<string>()
-                        {
-                            "Device"
-                        },
-                        bindings = new List<ActionBinding>()
-                        {
-                            new ActionBinding()
-                            {
-                                interactionPath = aim,
-                                interactionProfileName = profile,
-                            }
-                        }
-                    },
+                    // new ActionConfig()
+                    // {
+                    //     name = "devicePose",
+                    //     localizedName = "Device Pose",
+                    //     type = ActionType.Pose,
+                    //     usages = new List<string>()
+                    //     {
+                    //         "Device"
+                    //     },
+                    //     bindings = new List<ActionBinding>()
+                    //     {
+                    //         new ActionBinding()
+                    //         {
+                    //             interactionPath = aim,
+                    //             interactionProfileName = profile,
+                    //         }
+                    //     }
+                    // },
                     // Haptics
                     new ActionConfig()
                     {

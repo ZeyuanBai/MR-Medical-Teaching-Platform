@@ -78,6 +78,7 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\GUI\RuntimeFileBrowser.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Progress\NullProgressHandler.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Segmentation\OverlayType.cs" />
+    <Compile Include="Assets\Scripts\MxInkSwitcher.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\Ini\DatasetIniReader.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\TransferFunction\TransferFunction.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\ImageSequenceImporter\ImageSequenceImporter\ImageSequenceImporter.cs" />
@@ -151,7 +152,6 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\Type\PersonName.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\CrossSectionPlane.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Registry\DataElementDictionaryEntry.cs" />
-    <Compile Include="Assets\Scripts\RightHandMxInkSwitcher.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\ST.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Segmentation\SegmentationBuilder.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\ImageFileImporter\Interface\IImageFileImporter.cs" />
@@ -162,6 +162,7 @@
     <Compile Include="Assets\Scripts\GeneralGrabTransformer.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\UN.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\UI.cs" />
+    <Compile Include="Assets\Scripts\MxInkXRIControllerBridge.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\DS.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Registry\Uid.cs" />
     <Compile Include="Assets\Scripts\SpatialAnchorStorage.cs" />
@@ -192,11 +193,11 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\RenderMode.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\CrossSectionManager.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\Utilities\DatasetFormatUtilities.cs" />
+    <Compile Include="Assets\Scripts\Test\ConnectedDeviceLogger.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\GUI\Components\EditVolumeGUI.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\DataSet\Sequence.cs" />
     <Compile Include="Assets\Scripts\InsertTracheal.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\DataSet\NestedDataSet.cs" />
-    <Compile Include="Assets\Scripts\RightHandDeviceDetector.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\ByteConvert.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\OW.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\Nifti.NET\Nifti.cs" />
