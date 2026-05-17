@@ -24,7 +24,6 @@ public class MxInkXRIControllerBridge : MonoBehaviour
     [Header("Pose")]
     [SerializeField] private bool _driveControllerPose;
     [SerializeField] private bool _poseIsTrackingSpace = true;
-    [SerializeField] private bool _applyPoseToTransformImmediately;
 
     [Header("Input Mapping")]
     [SerializeField] private StylusInputSource _selectSources = StylusInputSource.Front;
@@ -40,8 +39,6 @@ public class MxInkXRIControllerBridge : MonoBehaviour
     private bool _hasOriginalInputSettings;
     private bool _originalEnableInputActions;
     private bool _originalEnableInputTracking;
-    private Vector3 _originalLocalPosition;
-    private Quaternion _originalLocalRotation;
     private bool _wasDriving;
     private bool _lastLoggedDriving;
     private string _lastInputLog;
@@ -103,10 +100,6 @@ public class MxInkXRIControllerBridge : MonoBehaviour
         }
 
         ApplyInput(controllerState, stylus);
-        if (_applyPoseToTransformImmediately && _driveControllerPose)
-        {
-            ApplyPoseToTransform(controllerState);
-        }
 
         LogInputState(stylus, controllerState);
 
@@ -213,8 +206,6 @@ public class MxInkXRIControllerBridge : MonoBehaviour
 
         _originalEnableInputActions = _targetController.enableInputActions;
         _originalEnableInputTracking = _targetController.enableInputTracking;
-        _originalLocalPosition = _targetController.transform.localPosition;
-        _originalLocalRotation = _targetController.transform.localRotation;
         _hasOriginalInputSettings = true;
     }
 
@@ -227,11 +218,6 @@ public class MxInkXRIControllerBridge : MonoBehaviour
 
         _targetController.enableInputActions = _originalEnableInputActions;
         _targetController.enableInputTracking = _originalEnableInputTracking;
-        if (_driveControllerPose)
-        {
-            _targetController.transform.localPosition = _originalLocalPosition;
-            _targetController.transform.localRotation = _originalLocalRotation;
-        }
 
         _hasOriginalInputSettings = false;
         _wasDriving = false;
@@ -253,20 +239,6 @@ public class MxInkXRIControllerBridge : MonoBehaviour
         controllerState.selectInteractionState.SetFrameState(false, 0f);
         controllerState.activateInteractionState.SetFrameState(false, 0f);
         controllerState.uiPressInteractionState.SetFrameState(false, 0f);
-    }
-
-    private void ApplyPoseToTransform(XRControllerState controllerState)
-    {
-        Transform targetTransform = _targetController.transform;
-        if ((controllerState.inputTrackingState & InputTrackingState.Position) != 0)
-        {
-            targetTransform.localPosition = controllerState.position;
-        }
-
-        if ((controllerState.inputTrackingState & InputTrackingState.Rotation) != 0)
-        {
-            targetTransform.localRotation = controllerState.rotation;
-        }
     }
 
     private void LogDrivingState(bool driving)

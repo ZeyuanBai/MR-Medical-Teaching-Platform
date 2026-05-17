@@ -1,29 +1,39 @@
-## 1. 输入语义与接入保持
+## 1. Stylus 输入语义
 
-- [x] 1.1 调整 `Assets/Scripts/MetaMxInkRuntime.cs`，保留当前基于 Meta 内部 MX Ink 兼容 profile 的接入判断，并把 MX Ink 的独立输入语义重新写入 `StylusInputs`。
-- [x] 1.2 结合 `Assets/Logitech/Scripts/MxInkHandler.cs` 和 `Assets/Logitech/UnityXR_InputActions/MX_Ink.inputactions`，补齐 tip、front/grab、middle、back/option 的输入映射与 fallback 读取路径。
-- [x] 1.3 更新 `Assets/Logitech/Scripts/StylusHandler.cs`，确保 active / inactive、按钮状态、压力值与位姿状态的输出行为和新的 MX Ink 语义一致。
-- [x] 1.4 补充必要的可诊断日志或调试开关，便于排查 profile 匹配、action 可读性、fallback 命中和输入折叠问题。
-- [x] 1.5 所有输入语义调整都通过项目内脚本完成，不修改 Logitech 提供的脚本、预制体或输入资源文件。
+- [x] 1.1 提供项目内 `StylusHandler` / `StylusInputs` 作为统一 stylus 输入状态。
+- [x] 1.2 在 `Assets/Scripts/MxInkSwitcher.cs` 中读取 MX Ink pose、tip、front/grab、middle、back/option 输入，并写入 `StylusInputs`。
+- [x] 1.3 在 stylus inactive 时清空 tip、front、middle、back、double tap 和 aggregate 输入状态。
+- [x] 1.4 保持 MX Ink 输入语义调整位于项目内脚本，不修改 Logitech 提供的脚本、prefab 或 input action assets。
 
-## 2. 训练工具桥接
+## 2. XRI Controller Bridge
 
-- [ ] 2.1 新建一个 `Assets/Scripts/` 下的 MX Ink 训练桥接脚本，负责把 `MetaMxInkRuntime` 的状态接到训练流程。
-- [ ] 2.2 在该桥接脚本中实现 Step 1-3 的工具接管逻辑，让 MX Ink active 时驱动 Marker、Scalpel 及其 tip 对象。
-- [ ] 2.3 在该桥接脚本中实现非目标步骤释放逻辑，确保 Step 4、Idle 或 MX Ink inactive 时不接管 Tracheal 等工具对象。
-- [ ] 2.4 在该桥接脚本中加入按钮到流程命令的映射，作为 Step 1-3 确认、重试或取消的增强输入，并保留现有 UI 回退路径。
-- [ ] 2.5 桥接脚本按场景预挂载方式接入，避免在初始化阶段动态挂载本可以提前配置的组件。
+- [x] 2.1 提供 `Assets/Scripts/MxInkXRIControllerBridge.cs`，从 `StylusHandler.CurrentState` 读取 stylus 状态。
+- [x] 2.2 支持将 tip、middle、front、back、back double tap 映射到 `select`、`activate`、`uiPress` 等 XRI controller action。
+- [x] 2.3 支持模拟量阈值、布尔输入、多个输入源合并和 controller action value 输出。
+- [x] 2.4 在 stylus inactive 或 bridge 停止接管时恢复原始 `ActionBasedController` input / tracking 配置。
+- [x] 2.5 通过 MCP 检查训练场景中 stylus runtime、XRI bridge 与 controller 对象的最终引用绑定。
 
-## 3. 训练流程与反馈接入
+## 3. 训练工具代理接入
 
-- [ ] 3.1 视需要轻量调整 `Assets/Scripts/SkillTrainingManager.cs`，让桥接脚本能够复用 Step 1-3 的确认、重试和推进入口，而不是复制 UI 逻辑。
-- [ ] 3.2 检查并必要时微调 `Assets/Scripts/PositionDetermination.cs`、`Assets/Scripts/CutSkin.cs`、`Assets/Scripts/CutAirway.cs`，保证 MX Ink 接管后仍能正常完成 collider 采样与评分。
-- [ ] 3.3 为 MX Ink 的有效接触、确认成功和无效操作补充 haptic、视觉或日志反馈，落在现有训练反馈链路中。
-- [ ] 3.4 确认 `Assets/Scripts/TrainingReportManager.cs`、`Assets/Scripts/SessionRecorder.cs` 等报告链路保持不变，MX Ink 只影响输入与工具驱动，不覆盖评分结果。
+- [x] 3.1 确认现有 Step 1 仍通过 `MarkerTip` collider 和 `PositionDetermination` 采样定位路径。
+- [x] 3.2 确认现有 Step 2 仍通过 `ScalpelTip` collider 和 `CutSkin` 采样切开路径。
+- [x] 3.3 确认现有 Step 3 仍通过 `ScalpelTip` collider 和 `CutAirway` 采样切开路径。
+- [x] 3.4 新增或完善训练桥接组件，将 `StylusHandler` 状态接入 `SkillTrainingManager`、Marker、MarkerTip、Scalpel 和 ScalpelTip。
+- [x] 3.5 在训练桥接组件中实现 Step 1-3 的工具代理位姿接管。
+- [x] 3.6 在训练桥接组件中实现 Step 4、Idle 或 stylus inactive 时释放工具接管，并确保不接管 Tracheal / TrachealTip。
 
-## 4. 场景配置与验证
+## 4. 流程命令与反馈
 
-- [ ] 4.1 在当前训练场景中挂载 MX Ink 桥接脚本，并绑定 `MetaMxInkRuntime`、`SkillTrainingManager` 及 Marker / Scalpel / tip / Tracheal 相关对象。
-- [ ] 4.2 配置工具位姿偏移、输入 action reference 和必要的 collider / tag 关联，确保桥接逻辑能在场景中正确工作。
-- [ ] 4.3 验证 profile 接入、独立输入、Step 1-3 接管、Step 4 不接管、反馈和报告兼容性，确认项目仍可回退到原有手柄和 UI 训练行为。
-- [ ] 4.4 所有场景绑定和对象配置通过 MCP 完成，不直接编辑场景文件。
+- [x] 4.1 将 stylus 按钮映射为 Step 1 的确认、重试或取消等增强流程命令，并复用现有 UI 路径的状态更新效果。
+- [x] 4.2 将 stylus 按钮映射为 Step 2-3 的完成、重试或取消等增强流程命令，并复用现有 UI 路径的状态更新效果。
+- [x] 4.3 保持现有 UI buttons 在 stylus 不可用或未配置命令时可继续完成 Step 1-3。
+- [ ] 4.4 为 valid contact、successful confirmation 和 invalid operation 接入 haptic、视觉或日志反馈。
+- [x] 4.5 确认 feedback failure 不阻塞训练步骤状态更新。
+
+## 5. 评分、报告与场景配置
+
+- [x] 5.1 确认 `PositionDetermination`、`CutSkin`、`CutAirway` 保持现有测量和评分职责，未被 stylus 输入层替代。
+- [x] 5.2 确认 `TrainingReportManager`、`SessionRecorder` 继续使用现有训练评价数据结构和评分规则。
+- [x] 5.3 通过 MCP 在训练场景中挂载并配置训练桥接组件。
+- [x] 5.4 通过 MCP 绑定 stylus runtime、`SkillTrainingManager`、Marker、MarkerTip、Scalpel、ScalpelTip、偏移和反馈对象引用。
+- [ ] 5.5 验证 Step 1-3 stylus 接管、Step 4 不接管、XRI action 映射、UI 回退、反馈和报告兼容性。

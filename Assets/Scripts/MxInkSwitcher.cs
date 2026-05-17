@@ -6,10 +6,6 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.SceneManagement;
-#endif
 
 /// <summary>
 /// Logitech MX Ink runtime that follows the official OpenXR Input System setup.
@@ -18,11 +14,6 @@ using UnityEditor.SceneManagement;
 public class MxInkSwitcher : StylusHandler
 {
     private const string LogitechToken = "logitech";
-    private const string InputActionsPath = "Assets/Logitech/UnityXR_InputActions/MX_Ink.inputactions";
-    private const string TipActionName = "Ink_Tip";
-    private const string GrabActionName = "Grab";
-    private const string OptionActionName = "Option";
-    private const string MiddleActionName = "Ink_MiddleButton";
 
     [Header("XR Origin References")]
     [SerializeField] private Transform _xrOriginTrackingRoot;
@@ -73,13 +64,6 @@ public class MxInkSwitcher : StylusHandler
         _stylusProxyRoot = transform;
         _stylusVisualRoot = gameObject;
     }
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        TryAssignDefaultBindingsInEditor();
-    }
-#endif
 
     private void Awake()
     {
@@ -390,63 +374,7 @@ public class MxInkSwitcher : StylusHandler
     private void TryAssignBindings()
     {
         TryAdoptSiblingMxInkHandlerBindings();
-#if UNITY_EDITOR
-        TryAssignDefaultBindingsInEditor();
-#endif
     }
-
-#if UNITY_EDITOR
-    private void TryAssignDefaultBindingsInEditor()
-    {
-        if (_tipActionRef != null &&
-            _grabActionRef != null &&
-            _optionActionRef != null &&
-            _middleActionRef != null)
-        {
-            return;
-        }
-
-        UnityEngine.Object[] subAssets = AssetDatabase.LoadAllAssetsAtPath(InputActionsPath);
-        if (subAssets == null || subAssets.Length == 0)
-        {
-            return;
-        }
-
-        _tipActionRef ??= FindReference(subAssets, TipActionName);
-        _grabActionRef ??= FindReference(subAssets, GrabActionName);
-        _optionActionRef ??= FindReference(subAssets, OptionActionName);
-        _middleActionRef ??= FindReference(subAssets, MiddleActionName);
-
-        if (_tipActionRef == null ||
-            _grabActionRef == null ||
-            _optionActionRef == null ||
-            _middleActionRef == null)
-        {
-            return;
-        }
-
-        EditorUtility.SetDirty(this);
-        if (gameObject.scene.IsValid())
-        {
-            EditorSceneManager.MarkSceneDirty(gameObject.scene);
-        }
-    }
-
-    private static InputActionReference FindReference(UnityEngine.Object[] subAssets, string actionName)
-    {
-        for (int i = 0; i < subAssets.Length; i++)
-        {
-            if (subAssets[i] is InputActionReference actionReference &&
-                actionReference.action != null &&
-                actionReference.action.name == actionName)
-            {
-                return actionReference;
-            }
-        }
-
-        return null;
-    }
-#endif
 
     private static InputActionReference ReadSiblingActionReference(Component siblingHandler, string fieldName, BindingFlags flags)
     {

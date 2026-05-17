@@ -389,10 +389,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _xrOriginTrackingRoot: {fileID: 0}
   _rightActionController: {fileID: 0}
-  _tipActionRef: {fileID: 106152260777017392, guid: 9a7c2a7554258114d8ecfb0148d0de03, type: 3}
-  _grabActionRef: {fileID: -1164434066174278975, guid: 9a7c2a7554258114d8ecfb0148d0de03, type: 3}
-  _optionActionRef: {fileID: -3998739080497272086, guid: 9a7c2a7554258114d8ecfb0148d0de03, type: 3}
-  _middleActionRef: {fileID: -3775169633974974777, guid: 9a7c2a7554258114d8ecfb0148d0de03, type: 3}
+  _tipActionRef: {fileID: 0}
+  _grabActionRef: {fileID: 0}
+  _optionActionRef: {fileID: 0}
+  _middleActionRef: {fileID: 0}
   _enableActionsOnLifecycle: 1
   _stylusProxyRoot: {fileID: 1071096043002936434}
   _stylusVisualRoot: {fileID: 8663219183392926418}
@@ -1064,8 +1064,17 @@ LineRenderer:
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4

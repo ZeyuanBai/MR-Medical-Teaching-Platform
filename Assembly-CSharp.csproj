@@ -175,6 +175,7 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\IS.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\US.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\ImageSequenceImporter\OpenDICOM\DICOMImporter.cs" />
+    <Compile Include="Assets\Scripts\MxInkToolTransformConstraint.cs" />
     <Compile Include="Assets\Scripts\GestureManager.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\OB.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\CS.cs" />
@@ -192,8 +193,8 @@
     <Compile Include="Assets\Scripts\RubricConfig.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\RenderMode.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\CrossSectionManager.cs" />
-    <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\Utilities\DatasetFormatUtilities.cs" />
     <Compile Include="Assets\Scripts\Test\ConnectedDeviceLogger.cs" />
+    <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\Utilities\DatasetFormatUtilities.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\GUI\Components\EditVolumeGUI.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\DataStructure\DataSet\Sequence.cs" />
     <Compile Include="Assets\Scripts\InsertTracheal.cs" />
@@ -207,12 +208,14 @@
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\Importing\ImageFileImporter\SimpleITK\SimpleITKImageFileImporter.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\SampleScene\CameraController.cs" />
     <Compile Include="Assets\Scripts\TrainingMeasurementUtility.cs" />
+    <Compile Include="Assets\Scripts\MxInkTrainingToolBridge.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\TransferFunction\TransferFunctionDatabase.cs" />
     <Compile Include="Assets\Scripts\SystemIntroductionManager.cs" />
     <Compile Include="Assets\Scripts\SkillTrainingManager.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\3rdparty\openDicom\Encoding\OF.cs" />
     <Compile Include="Assets\Scripts\PlaneTransformBind.cs" />
     <Compile Include="Assets\Logitech\Scripts\DeviceHandler.cs" />
+    <Compile Include="Assets\Scripts\MxInkStylusToolContactSource.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\GUI\Components\EditSliceGUI.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\GUI\Components\RuntimeGUI.cs" />
     <Compile Include="Assets\UnityVolumeRendering-master\Assets\Scripts\VolumeObject\CrossSectionObject.cs" />
